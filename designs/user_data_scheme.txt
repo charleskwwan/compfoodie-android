@@ -1,0 +1,21 @@
+Data Scheme for User
+CompFoodie, Android App
+by: Nga Pham and Charles Wan
+on: 9/26/16
+
+User class:
+Vars
+- name, private String
+- email, private String
+- picture, private String (pic file name)
+Methods
+- Getters and setters
+
+APIs
+Primary API for authentication: Facebook Login API
+Link: https://developers.facebook.com/docs/facebook-login/permissions
+Information permitted:
+- public profile (id, name, first_name, last_name, picture, etc.)
+- user_friends
+- email
+- more (requires Facebook review)

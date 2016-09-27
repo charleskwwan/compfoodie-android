@@ -1,0 +1,25 @@
+Data Scheme for Groups
+CompFoodie, Android App
+by: Nga Pham and Charles Wan
+on: 9/26/16
+
+OrderGroup class:
+Vars
+- cuisine, private Enum (one value per cuisine, match with Yelp)
+- meeting_location, private Location (convert with Google Maps json)
+- party_cap, private Integer
+- party_size, private Integer
+- wait_time, private CountDownTimer
+- msg, private String
+- party, private List<User>
+- creator, private User
+- restaurant_suggestions, private List<User>
+Methods
+- Getters and setters
+
+APIs
+Primary API for meeting location setting: Google Maps API
+Link: https://developers.google.com/maps/documentation/android-api/map
+Primary API for 'verifying' cuisine and adding restaurants: Yelp API
+Link: https://www.yelp.com/developers/documentation/v2/search_api 
+
