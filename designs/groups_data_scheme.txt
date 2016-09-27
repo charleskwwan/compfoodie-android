@@ -3,7 +3,7 @@ CompFoodie, Android App
 by: Nga Pham and Charles Wan
 on: 9/26/16
 
-OrderGroup class:
+Group class:
 Vars
 - cuisine, private Enum (one value per cuisine, match with Yelp)
 - meeting_location, private Location (convert with Google Maps json)
@@ -13,7 +13,7 @@ Vars
 - msg, private String
 - party, private List<User>
 - creator, private User
-- restaurant_suggestions, private List<User>
+- restaurant_suggestions, private List<String>
 Methods
 - Getters and setters
 
