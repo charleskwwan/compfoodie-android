@@ -29,7 +29,7 @@
         android:layout_marginLeft="35dp"
         android:layout_marginStart="35dp"
         android:layout_marginTop="30dp"
-        android:text="Cuisine" />
+        android:hint="Cuisine" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
         android:layout_below="@+id/cuisine_input"
         android:layout_alignLeft="@+id/cuisine_input"
         android:layout_alignStart="@+id/cuisine_input"
-        android:text="Location" />
+        android:hint="Location" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
         android:layout_below="@+id/location_input"
         android:layout_alignLeft="@+id/location_input"
         android:layout_alignStart="@+id/location_input"
-        android:text="Party Size" />
+        android:hint="Party Size" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -57,10 +57,10 @@
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/short_message_input"
-        android:text="Short Message"
         android:layout_below="@+id/wait_time_input"
         android:layout_alignLeft="@+id/wait_time_input"
-        android:layout_alignStart="@+id/wait_time_input" />
+        android:layout_alignStart="@+id/wait_time_input"
+        android:hint="Short Message" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -71,6 +71,6 @@
         android:layout_below="@+id/party_size_input"
         android:layout_alignLeft="@+id/party_size_input"
         android:layout_alignStart="@+id/party_size_input"
-        android:text="Wait Time" />
+        android:hint="Wait Time" />
 
 </RelativeLayout>
