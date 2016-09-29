@@ -12,5 +12,65 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Create a Group"
+        android:id="@+id/create_group_title"
+        android:layout_marginTop="56dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cuisine_input"
+        android:layout_below="@+id/create_group_title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="30dp"
+        android:text="Cuisine" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/location_input"
+        android:layout_below="@+id/cuisine_input"
+        android:layout_alignLeft="@+id/cuisine_input"
+        android:layout_alignStart="@+id/cuisine_input"
+        android:text="Location" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        android:ems="10"
+        android:id="@+id/party_size_input"
+        android:layout_below="@+id/location_input"
+        android:layout_alignLeft="@+id/location_input"
+        android:layout_alignStart="@+id/location_input"
+        android:text="Party Size" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/short_message_input"
+        android:text="Short Message"
+        android:layout_below="@+id/wait_time_input"
+        android:layout_alignLeft="@+id/wait_time_input"
+        android:layout_alignStart="@+id/wait_time_input" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="time"
+        android:ems="10"
+        android:id="@+id/wait_time_input"
+        android:layout_below="@+id/party_size_input"
+        android:layout_alignLeft="@+id/party_size_input"
+        android:layout_alignStart="@+id/party_size_input"
+        android:text="Wait Time" />
+
 </RelativeLayout>
