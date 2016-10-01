@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">CompFoodie</string>
+    <string name="browse_item_text">Browse</string>
+    <string name="groups_item_text">Groups</string>
+    <string name="settings_item_text">Placeholder</string>
 </resources>
