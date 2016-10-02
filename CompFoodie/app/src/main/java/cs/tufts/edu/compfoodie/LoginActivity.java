@@ -25,7 +25,6 @@ public class LoginActivity extends AppCompatActivity {
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
-        Log.v("Debug", "Here");
 
         info = (TextView) findViewById(R.id.info);
         callbackManager = CallbackManager.Factory.create();
@@ -34,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                // TODO: goto browse page
                 info.setText("User ID:  " +
                         loginResult.getAccessToken().getUserId() + "\n" +
                         "Auth Token: " + loginResult.getAccessToken().getToken());
