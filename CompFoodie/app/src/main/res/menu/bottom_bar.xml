@@ -15,4 +15,5 @@
         android:id="@+id/settings_item"
         android:icon="@drawable/ic_settings_black_24dp"
         android:title="@string/settings_item_text" />
+    <!-- to add custom color when selected, app:barColorWhenSelected-->
 </menu>
