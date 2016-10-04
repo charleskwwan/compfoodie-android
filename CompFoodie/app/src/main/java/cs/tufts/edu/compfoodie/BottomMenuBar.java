@@ -33,6 +33,6 @@ public class BottomMenuBar {
                 }
             }
         });
-        bottomBar.setActiveTabColor("#c2185b");
+        bottomBar.setActiveTabColor(activity.getColor(R.color.colorAccent));
     }
 }
