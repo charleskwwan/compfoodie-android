@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">CompFoodie</string>
+    <string name="create_group_title">Create a Group</string>
     <string name="facebook_app_id">1841426099410747</string>
     <string name="browse_item_text">Browse</string>
     <string name="groups_item_text">Groups</string>
