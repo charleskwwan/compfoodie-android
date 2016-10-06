@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!-- CompFoodie Theme Colors -->
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#26b7dd</color>
+    <color name="colorAccent">#20b1d8</color>
+    <color name="colorBackground">#ffffff</color>
+    <color name="colorForeground">#535353</color>
+    <color name="navBarColor">#000000</color>
+    <color name="statBarColor">#26b7dd</color>
+    <color name="textColorPrimary">#de000000</color>
+    <color name="textColorPrimaryInverse">#ffffff</color>
+    <color name="textColorSecondary">#26b6db</color>
+    <color name="textColorSecondaryInverse">#b3ffffff</color>
 </resources>

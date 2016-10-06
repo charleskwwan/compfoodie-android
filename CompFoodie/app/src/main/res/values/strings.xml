@@ -1,6 +1,20 @@
 <resources>
     <string name="app_name">CompFoodie</string>
+    <!-- Create Group Activity -->
+    <string name="create_group_title">Create a Group</string>
+    <string name="cuisine_title">Cuisine</string>
+    <string name="cuisine_hint">Sushi, pizza, Chinese, etc.</string>
+    <string name="location_title">Location</string>
+    <string name="location_hint">Where do you want to meet to order?</string>
+    <string name="party_size_title">Party Size</string>
+    <string name="party_size_hint">Order with max how many people?</string>
+    <string name="wait_time_title">Order Time</string>
+    <string name="wait_time_hint">When will you order?</string>
+    <string name="create_button_text">Create</string>
+
     <string name="facebook_app_id">1841426099410747</string>
+
+    <!-- Bottom Bar -->
     <string name="browse_item_text">Browse</string>
     <string name="groups_item_text">Groups</string>
     <string name="settings_item_text">Placeholder</string>

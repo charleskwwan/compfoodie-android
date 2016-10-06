@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "598529388832",
+    "firebase_url": "https://api-project-598529388832.firebaseio.com",
+    "project_id": "api-project-598529388832",
+    "storage_bucket": "api-project-598529388832.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:598529388832:android:7b4ff87fc36ce2e4",
+        "android_client_info": {
+          "package_name": "cs.tufts.edu.compfoodie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "598529388832-6bvt7iu8ua8abkhohia9r157audc3jdp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzbvAWmgsZ8MLpcL4nldXr56CiiV50KEg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
