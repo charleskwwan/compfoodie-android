@@ -10,14 +10,14 @@ import java.util.List;
  */
 public class Group {
     private String cuisine; // enumize later for one value per cuisine
-    private Location meeting_location; // convert with Google Maps json for lat/long
-    private Integer party_cap;
-    private Integer party_size;
-    private CountDownTimer wait_time;
+    private Location meetingLocation; // convert with Google Maps json for lat/long
+    private Integer partyCap;
+    private Integer partySize;
+    private CountDownTimer waitTime;
     private String msg;
     private List<User> party;
     private User creator;
-    private List<String> restaurant_suggestions;
+    private List<String> restaurantSuggestions;
 
     public String getCuisine() {
         return cuisine;
@@ -27,36 +27,36 @@ public class Group {
         this.cuisine = cuisine;
     }
 
-    public Location getMeeting_location() {
-        return meeting_location;
+    public Location getMeetingLocation() {
+        return meetingLocation;
     }
 
-    public void setMeeting_location(Location meeting_location) {
-        this.meeting_location = meeting_location;
+    public void setMeetingLocation(Location meetingLocation) {
+        this.meetingLocation = meetingLocation;
     }
 
-    public Integer getParty_cap() {
-        return party_cap;
+    public Integer getPartyCap() {
+        return partyCap;
     }
 
-    public void setParty_cap(Integer party_cap) {
-        this.party_cap = party_cap;
+    public void setPartyCap(Integer partyCap) {
+        this.partyCap = partyCap;
     }
 
-    public Integer getParty_size() {
-        return party_size;
+    public Integer getPartySize() {
+        return partySize;
     }
 
-    public void setParty_size(Integer party_size) {
-        this.party_size = party_size;
+    public void setPartySize(Integer partySize) {
+        this.partySize = partySize;
     }
 
-    public CountDownTimer getWait_time() {
-        return wait_time;
+    public CountDownTimer getWaitTime() {
+        return waitTime;
     }
 
-    public void setWait_time(CountDownTimer wait_time) {
-        this.wait_time = wait_time;
+    public void setWaitTime(CountDownTimer waitTime) {
+        this.waitTime = waitTime;
     }
 
     public String getMsg() {
@@ -83,11 +83,11 @@ public class Group {
         this.creator = creator;
     }
 
-    public List<String> getRestaurant_suggestions() {
-        return restaurant_suggestions;
+    public List<String> getRestaurantSuggestions() {
+        return restaurantSuggestions;
     }
 
-    public void setRestaurant_suggestions(List<String> restaurant_suggestions) {
-        this.restaurant_suggestions = restaurant_suggestions;
+    public void setRestaurantSuggestions(List<String> restaurantSuggestions) {
+        this.restaurantSuggestions = restaurantSuggestions;
     }
 }
