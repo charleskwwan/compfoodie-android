@@ -10,6 +10,8 @@
     <string name="party_size_hint">Order with max how many people?</string>
     <string name="wait_time_title">Order Time</string>
     <string name="wait_time_hint">When will you order?</string>
+    <string name="message_title">Short Message</string>
+    <string name="message_hint">Want to order sushi?</string>
     <string name="create_button_text">Create</string>
 
     <string name="facebook_app_id">1841426099410747</string>
