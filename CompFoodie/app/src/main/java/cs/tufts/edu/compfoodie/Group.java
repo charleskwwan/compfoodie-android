@@ -3,91 +3,74 @@ package cs.tufts.edu.compfoodie;
 import android.location.Location;
 import android.os.CountDownTimer;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 /**
  * Created by charlw on 9/27/16.
  */
 public class Group {
-    private String cuisine; // enumize later for one value per cuisine
-    private Location meetingLocation; // convert with Google Maps json for lat/long
+    // private Location meetingLocation; // convert with Google Maps JSON for lat/long
+    private String location;
     private Integer partyCap;
     private Integer partySize;
-    private CountDownTimer waitTime;
-    private String msg;
+    private Integer orderTime;
+    private String message;
     private List<User> party;
     private User creator;
-    private List<String> restaurantSuggestions;
 
-    public String getCuisine() {
-        return cuisine;
+    public Group(User creator, String location, Integer partyCap, Integer partySize, Integer orderTime, String message, List<User> party) {
+        this.creator = creator;
+        this.location = location;
+        this.partyCap = partyCap;
+        this.partySize = partySize;
+        this.orderTime = orderTime;
+        this.message = message;
+        this.party = party;
     }
 
-    public void setCuisine(String cuisine) {
-        this.cuisine = cuisine;
-    }
-
-    public Location getMeetingLocation() {
-        return meetingLocation;
-    }
-
-    public void setMeetingLocation(Location meetingLocation) {
-        this.meetingLocation = meetingLocation;
-    }
-
-    public Integer getPartyCap() {
-        return partyCap;
+    public void setMeetingLocation(String location) {
+        this.location = location;
     }
 
     public void setPartyCap(Integer partyCap) {
         this.partyCap = partyCap;
     }
 
-    public Integer getPartySize() {
-        return partySize;
-    }
-
     public void setPartySize(Integer partySize) {
         this.partySize = partySize;
     }
 
-    public CountDownTimer getWaitTime() {
-        return waitTime;
+    public void setOrderTime(Integer orderTime) {
+        this.orderTime = orderTime;
     }
 
-    public void setWaitTime(CountDownTimer waitTime) {
-        this.waitTime = waitTime;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public List<User> getParty() {
-        return party;
+    public void setMsg(String message) {
+        this.message = message;
     }
 
     public void setParty(List<User> party) {
         this.party = party;
     }
 
-    public User getCreator() {
-        return creator;
-    }
-
     public void setCreator(User creator) {
         this.creator = creator;
     }
 
-    public List<String> getRestaurantSuggestions() {
-        return restaurantSuggestions;
-    }
-
-    public void setRestaurantSuggestions(List<String> restaurantSuggestions) {
-        this.restaurantSuggestions = restaurantSuggestions;
+    public JSONObject getJSON() {
+        JSONObject groupJSON = new JSONObject();
+        try {
+            groupJSON.put("location", this.location);
+            groupJSON.put("partyCap", this.partyCap);
+            groupJSON.put("partySize", this.partySize);
+            groupJSON.put("orderTime", this.orderTime);
+            groupJSON.put("message", this.message);
+            groupJSON.put("creator", this.creator);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return groupJSON;
     }
 }

@@ -13,6 +13,11 @@ import android.widget.ImageButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class CreateGroupActivity extends AppCompatActivity {
 
     Group group;
@@ -47,7 +52,15 @@ public class CreateGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String message = ((EditText)findViewById(R.id.message_input)).getText().toString();
-                Integer partySize = Integer.parseInt(((EditText)findViewById(R.id.party_size_input)).getText().toString());
+                Integer partyCap = Integer.parseInt(((EditText)findViewById(R.id.party_size_input)).getText().toString());
+                Integer partySize = 0;
+                String location = ((EditText)findViewById(R.id.location_input)).getText().toString();
+                Integer orderTime = 10;
+                List<User> party = new ArrayList<User>();
+                User creator = new User();
+
+                group = new Group(creator, location, partyCap, partySize, orderTime, message, party);
+                JSONObject groupJSON = group.getJSON();
             }
         });
     }
