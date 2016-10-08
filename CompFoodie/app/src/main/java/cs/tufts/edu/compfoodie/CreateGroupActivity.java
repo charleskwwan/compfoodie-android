@@ -46,12 +46,8 @@ public class CreateGroupActivity extends AppCompatActivity {
         crtbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String cuisine = ((EditText)findViewById(R.id.cuisine_input)).getText().toString();
+                String message = ((EditText)findViewById(R.id.message_input)).getText().toString();
                 Integer partySize = Integer.parseInt(((EditText)findViewById(R.id.party_size_input)).getText().toString());
-
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("group");
-                myRef.setValue("Hello, World!");
             }
         });
     }
