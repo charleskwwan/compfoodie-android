@@ -2,8 +2,6 @@
     <string name="app_name">CompFoodie</string>
     <!-- Create Group Activity -->
     <string name="create_group_title">Create a Group</string>
-    <string name="cuisine_title">Cuisine</string>
-    <string name="cuisine_hint">Sushi, pizza, Chinese, etc.</string>
     <string name="location_title">Location</string>
     <string name="location_hint">Where do you want to meet to order?</string>
     <string name="party_size_title">Party Size</string>

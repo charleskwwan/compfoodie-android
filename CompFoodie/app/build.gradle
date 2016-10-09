@@ -39,4 +39,6 @@ dependencies {
 
     apply plugin: 'com.google.gms.google-services'
     compile 'com.google.firebase:firebase-database:9.6.1'
+
+    compile 'com.android.volley:volley:1.0.0'
 }

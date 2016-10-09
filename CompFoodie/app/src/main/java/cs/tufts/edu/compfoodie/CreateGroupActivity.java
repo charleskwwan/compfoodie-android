@@ -1,24 +1,19 @@
 package cs.tufts.edu.compfoodie;
 
-import android.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateGroupActivity extends AppCompatActivity {
+public class CreateGroupActivity extends AppCompatActivity  {
 
     Group group;
 
@@ -52,16 +47,24 @@ public class CreateGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String message = ((EditText)findViewById(R.id.message_input)).getText().toString();
-                Integer partyCap = Integer.parseInt(((EditText)findViewById(R.id.party_size_input)).getText().toString());
+                //Integer partyCap = Integer.parseInt(((EditText)findViewById(R.id.party_size_input)).getText().toString());
+                Integer partyCap = 10;
                 Integer partySize = 0;
                 String location = ((EditText)findViewById(R.id.location_input)).getText().toString();
-                Integer orderTime = 10;
+                Integer orderTime = 0;
                 List<User> party = new ArrayList<User>();
                 User creator = new User();
 
                 group = new Group(creator, location, partyCap, partySize, orderTime, message, party);
                 JSONObject groupJSON = group.getJSON();
+
+//                String addGroupURL = "https://compfoodie-server.herokuapp.com/api/addgroup";
+                String addGroupURL = "http://10.0.2.2/api/addgroup";
+
+                // Sending JSON new group to server
+                VolleyUtils.POST(addGroupURL, groupJSON);
             }
         });
     }
+
 }
