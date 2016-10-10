@@ -1,6 +1,5 @@
 package cs.tufts.edu.compfoodie;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
@@ -30,12 +29,12 @@ public class WaitTimePickerFragment extends DialogFragment implements TimePicker
 
     @Override
     public void onTimeSet(TimePicker tp, int hour, int minute) {
-        TextView wtoutput = (TextView)getActivity().findViewById(R.id.wait_time_output);
+        TextView wtoutput = (TextView)getActivity().findViewById(R.id.order_time_output);
         String time_format = "";
         if (!DateFormat.is24HourFormat(getActivity())) {
             time_format = hour < 12 ? "AM" : "PM";
             if (hour > 12) hour %= 12;
         }
-        wtoutput.setText(String.format(Locale.ENGLISH, "%d:%01d%s", hour, minute, time_format));
+        wtoutput.setText(String.format(Locale.ENGLISH, "%d:%01d %s", hour, minute, time_format));
     }
 }

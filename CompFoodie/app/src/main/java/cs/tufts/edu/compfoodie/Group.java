@@ -16,12 +16,12 @@ public class Group {
     private String location;
     private Integer partyCap;
     private Integer partySize;
-    private Integer orderTime;
+    private Long orderTime;
     private String message;
     private List<User> party;
     private User creator;
 
-    public Group(User creator, String location, Integer partyCap, Integer partySize, Integer orderTime, String message, List<User> party) {
+    public Group(User creator, String location, Integer partyCap, Integer partySize, Long orderTime, String message, List<User> party) {
         this.creator = creator;
         this.location = location;
         this.partyCap = partyCap;
@@ -43,7 +43,7 @@ public class Group {
         this.partySize = partySize;
     }
 
-    public void setOrderTime(Integer orderTime) {
+    public void setOrderTime(Long orderTime) {
         this.orderTime = orderTime;
     }
 

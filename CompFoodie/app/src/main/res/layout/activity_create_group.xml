@@ -102,7 +102,7 @@
             android:inputType="numberSigned"/>
 
         <TextView
-            android:id="@+id/wait_time_title"
+            android:id="@+id/order_time_title"
             android:layout_below="@+id/party_size_input"
             android:text="@string/wait_time_title"
             android:layout_width="wrap_content"
@@ -114,8 +114,8 @@
             android:textColor="@color/textColorPrimary"/>
 
         <TextView
-            android:id="@+id/wait_time_output"
-            android:layout_below="@+id/wait_time_title"
+            android:id="@+id/order_time_output"
+            android:layout_below="@+id/order_time_title"
             android:text="@string/wait_time_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,13 +131,13 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_access_time_black_48dp"
             android:background="@null"
-            android:layout_alignBottom="@+id/wait_time_output"
+            android:layout_alignBottom="@+id/order_time_output"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/message_title"
-            android:layout_below="@+id/wait_time_output"
+            android:layout_below="@+id/order_time_output"
             android:text="@string/message_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
