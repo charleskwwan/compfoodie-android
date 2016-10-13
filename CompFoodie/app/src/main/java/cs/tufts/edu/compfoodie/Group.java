@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class Group implements Serializable {
     // private Location meetingLocation; // convert with Google Maps JSON for lat/long
-
+    private String groupId;
     private String location;
     private Integer partyCap;
     private Integer partySize;
@@ -35,6 +35,7 @@ public class Group implements Serializable {
         this.party = party;
     }
 
+    public String     getGroupId() { return groupId; }
     public String     getLocation() { return location; }
     public Integer    getPartyCap() { return partyCap; }
     public Integer    getPartySize() { return partySize; }
@@ -43,6 +44,7 @@ public class Group implements Serializable {
     public List<User> getParty() { return party; }
     public User       getCreator() { return creator; }
 
+    public void setGroupId(String groupId) { this.groupId = groupId; }
     public void setMeetingLocation(String location) {
         this.location = location;
     }

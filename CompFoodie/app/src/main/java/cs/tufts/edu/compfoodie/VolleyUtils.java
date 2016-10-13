@@ -22,16 +22,16 @@ import org.json.JSONObject;
 
 /**
  * Created by ngapham on 10/9/16.
+ *      Handles networking with our server
  */
 
-public class VolleyUtils implements Response.Listener<JSONObject>, Response.ErrorListener {
-
-    public static void POST (String url, JSONObject json) {
+public class VolleyUtils { // implements Response.Listener<JSONObject>, Response.ErrorListener {
+    public static void POST (String url, JSONObject json, final VolleyCallback callback) {
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url, json,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        VolleyLog.v("Response:%n %s", response.toString());
+                        callback.onSuccessResponse(response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -41,7 +41,6 @@ public class VolleyUtils implements Response.Listener<JSONObject>, Response.Erro
                         if (networkResponse != null) {
                             Log.e("Volley", "Error. HTTP Status Code:"+networkResponse.statusCode);
                         }
-
                         if (error instanceof TimeoutError) {
                             Log.e("Volley", "TimeoutError");
                         }else if(error instanceof NoConnectionError){
@@ -60,11 +59,11 @@ public class VolleyUtils implements Response.Listener<JSONObject>, Response.Erro
         ApplicationController.getInstance().addToRequestQueue(req);
     }
 
-    public void onResponse(JSONObject response) {
-        VolleyLog.v("Response:%n %s", response.toString());
-    }
-
-    public void onErrorResponse(VolleyError error) {
-        VolleyLog.e("Error: ", error.getMessage());
-    }
+//    public void onResponse(JSONObject response) {
+//        VolleyLog.v("Response:%n %s", response.toString());
+//    }
+//
+//    public void onErrorResponse(VolleyError error) {
+//        VolleyLog.e("Error: ", error.getMessage());
+//    }
 }

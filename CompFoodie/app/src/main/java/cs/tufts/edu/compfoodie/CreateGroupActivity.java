@@ -62,14 +62,22 @@ public class CreateGroupActivity extends AppCompatActivity  {
                 List<User> party = new ArrayList<User>();
                 User creator = new User();
 
-                Group group = new Group(creator, location, partyCap, partySize, orderTime, message, party);
+                final Group group = new Group(creator, location, partyCap, partySize, orderTime, message, party);
                 JSONObject groupJSON = group.getJSON();
 
-                // String addGroupURL = "https://compfoodie-server.herokuapp.com/api/addgroup";
-                String addGroupURL = "http://10.0.2.2/api/addgroup";
+                 String addGroupURL = "https://compfoodie-server.herokuapp.com/api/addgroup";
+//                String addGroupURL = "http://10.0.2.2:5000/api/addgroup";
 
                 // Sending JSON new group to server
-                VolleyUtils.POST(addGroupURL, groupJSON);
+                VolleyUtils.POST(addGroupURL, groupJSON, new VolleyCallback() {
+                    @Override
+                    public void onSuccessResponse(JSONObject response) {
+                        try {
+                            group.setGroupId(response.getString("id"));
+                        } catch (org.json.JSONException err) {}
+                        Log.v("*** Group ID:", group.getGroupId());
+                    }
+                });
 
                 // Redirect to status page
                 Intent statusPage = new Intent(getApplicationContext(), GroupStatusActivity.class);
