@@ -35,6 +35,6 @@ public class WaitTimePickerFragment extends DialogFragment implements TimePicker
             time_format = hour < 12 ? "AM" : "PM";
             if (hour > 12) hour %= 12;
         }
-        wtoutput.setText(String.format(Locale.ENGLISH, "%d:%01d %s", hour, minute, time_format));
+        wtoutput.setText(String.format(Locale.ENGLISH, "%02d:%02d %s", hour, minute, time_format));
     }
 }

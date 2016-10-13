@@ -1,5 +1,6 @@
 package cs.tufts.edu.compfoodie;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -64,17 +65,23 @@ public class CreateGroupActivity extends AppCompatActivity  {
                 Group group = new Group(creator, location, partyCap, partySize, orderTime, message, party);
                 JSONObject groupJSON = group.getJSON();
 
-//                String addGroupURL = "https://compfoodie-server.herokuapp.com/api/addgroup";
+                // String addGroupURL = "https://compfoodie-server.herokuapp.com/api/addgroup";
                 String addGroupURL = "http://10.0.2.2/api/addgroup";
 
                 // Sending JSON new group to server
                 VolleyUtils.POST(addGroupURL, groupJSON);
+
+                // Redirect to status page
+                Intent statusPage = new Intent(getApplicationContext(), GroupStatusActivity.class);
+                statusPage.putExtra("group", group);
+                startActivity(statusPage);
             }
         });
     }
 
     // Returns order time in Unix
     private Long getOrderTime(String timeStr) {
+        Log.v("timeStr", timeStr);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
 
         Calendar today = Calendar.getInstance();

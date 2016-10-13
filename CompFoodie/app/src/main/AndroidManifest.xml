@@ -6,14 +6,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".ApplicationController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/CompFoodie"
-        tools:replace="android:theme"
-        android:name="cs.tufts.edu.compfoodie.ApplicationController">
-
+        tools:replace="android:theme">
         <activity android:name=".CreateGroupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,6 +31,7 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             tools:replace="android:theme" />
+        <activity android:name=".GroupStatusActivity"></activity>
     </application>
 
 </manifest>

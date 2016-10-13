@@ -2,17 +2,21 @@ package cs.tufts.edu.compfoodie;
 
 import android.location.Location;
 import android.os.CountDownTimer;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by charlw on 9/27/16.
  */
-public class Group {
+public class Group implements Serializable {
     // private Location meetingLocation; // convert with Google Maps JSON for lat/long
+
     private String location;
     private Integer partyCap;
     private Integer partySize;
@@ -31,30 +35,32 @@ public class Group {
         this.party = party;
     }
 
+    public String     getLocation() { return location; }
+    public Integer    getPartyCap() { return partyCap; }
+    public Integer    getPartySize() { return partySize; }
+    public Long       getOrderTime() { return orderTime; }
+    public String     getMessage() { return message; }
+    public List<User> getParty() { return party; }
+    public User       getCreator() { return creator; }
+
     public void setMeetingLocation(String location) {
         this.location = location;
     }
-
     public void setPartyCap(Integer partyCap) {
         this.partyCap = partyCap;
     }
-
     public void setPartySize(Integer partySize) {
         this.partySize = partySize;
     }
-
     public void setOrderTime(Long orderTime) {
         this.orderTime = orderTime;
     }
-
     public void setMsg(String message) {
         this.message = message;
     }
-
     public void setParty(List<User> party) {
         this.party = party;
     }
-
     public void setCreator(User creator) {
         this.creator = creator;
     }
