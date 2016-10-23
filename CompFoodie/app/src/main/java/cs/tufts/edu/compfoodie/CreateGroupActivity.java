@@ -31,7 +31,7 @@ public class CreateGroupActivity extends AppCompatActivity  {
         Toolbar toolbar = (Toolbar)findViewById(R.id.create_group_toolbar);
         toolbar.setTitle(getString(R.string.create_group_title));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // need to set parent in manifest
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // todo: need to set parent in manifest
 
         // Wait Time Picker
         ImageButton wtbutton = (ImageButton)findViewById(R.id.wait_time_pick_button);

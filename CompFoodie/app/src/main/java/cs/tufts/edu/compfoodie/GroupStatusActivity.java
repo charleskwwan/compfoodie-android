@@ -2,6 +2,7 @@ package cs.tufts.edu.compfoodie;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -16,6 +17,14 @@ public class GroupStatusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_status);
 
+        BottomMenuBar bottombar = new BottomMenuBar(this, savedInstanceState);
+
+        // ToolBar
+        Toolbar toolbar = (Toolbar)findViewById(R.id.group_status_toolbar);
+        toolbar.setTitle(getString(R.string.group_status_title));
+        setSupportActionBar(toolbar);
+
+        // groups handling
         Group group = (Group) getIntent().getSerializableExtra("group");
 
         TextView locationStatus = (TextView)findViewById(R.id.location_status);
