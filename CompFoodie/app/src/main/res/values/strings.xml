@@ -22,4 +22,7 @@
     <string name="browse_item_text">Browse</string>
     <string name="groups_item_text">Groups</string>
     <string name="settings_item_text">Placeholder</string>
+    <!-- Toolbar -->
+    <string name="user_display_item_title">User</string>
+    <string name="add_group_item_title">Add Group</string>
 </resources>

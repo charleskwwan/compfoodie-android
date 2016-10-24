@@ -52,12 +52,10 @@ public class LoginActivity extends AppCompatActivity {
                 accessToken = loginResult.getAccessToken();
                 handleFacebookAccessToken(accessToken);
             }
-
             @Override
             public void onCancel() {
                 Log.v("*** Facebook Login", "Login cancelled");
             }
-
             @Override
             public void onError(FacebookException e) {
                 Log.e("*** Facebook Login", e.toString());
@@ -73,7 +71,8 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("*** Firebase Auth", "User " + user.getUid() + " signed in");
                     Toast.makeText(LoginActivity.this, "Logged in as " + user.getDisplayName(),
                                    Toast.LENGTH_SHORT).show();
-                    // todo: goto browse activity
+                    Intent goToBrowse = new Intent(getApplicationContext(), BrowseActivity.class);
+                    startActivity(goToBrowse);
                 } else { // user not signed in/signed out
                     Log.d("*** Firebase Auth", "User not signed in");
                 }
