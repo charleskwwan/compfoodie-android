@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -18,7 +21,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static android.R.attr.category;
+import static android.R.attr.data;
+import static android.R.attr.enabled;
+import static android.R.attr.key;
+import static android.R.attr.name;
+import static android.R.attr.text;
+
 public class CreateGroupActivity extends AppCompatActivity  {
+
+    private FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +62,8 @@ public class CreateGroupActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 String message = ((EditText)findViewById(R.id.message_input)).getText().toString();
-                Integer partyCap = Integer.parseInt(((EditText)findViewById(R.id.party_size_input)).getText().toString());
-                Integer partySize = 0;
+                Double partyCap = (double) Integer.parseInt(((EditText)findViewById(R.id.party_size_input)).getText().toString());
+                Double partySize = 0.0;
                 String location = ((EditText)findViewById(R.id.location_input)).getText().toString();
 
                 // Get order time
@@ -62,27 +74,24 @@ public class CreateGroupActivity extends AppCompatActivity  {
                 List<User> party = new ArrayList<User>();
                 User creator = new User();
 
-                final Group group = new Group(creator, location, partyCap, partySize, orderTime, message, party);
-                JSONObject groupJSON = group.getJSON();
+                Group group = new Group(location, partyCap, partySize, orderTime, message);
 
-                 String addGroupURL = "https://compfoodie-server.herokuapp.com/api/addgroup";
-//                String addGroupURL = "http://10.0.2.2:5000/api/addgroup";
+                database = FirebaseDatabase.getInstance();
+                //DatabaseReference groupRef = database.getReference("groups");
+                //groupRef.setValue(group);
 
-                // Sending JSON new group to server
-                VolleyUtils.POST(addGroupURL, groupJSON, new VolleyCallback() {
-                    @Override
-                    public void onSuccessResponse(JSONObject response) {
-                        try {
-                            group.setGroupId(response.getString("id"));
-                        } catch (org.json.JSONException err) {}
-                        Log.v("*** Group ID:", group.getGroupId());
-                    }
-                });
+                // Write a message to the database
+                DatabaseReference myRef = database.getReference().child("friend");
+                myRef.setValue("FUCK");
+
+                Log.v("DEBUG", "Are we storing anything????");
+                //String addGroupURL = "https://compfoodie-server.herokuapp.com/api/addgroup";
 
                 // Redirect to status page
-                Intent statusPage = new Intent(getApplicationContext(), GroupStatusActivity.class);
-                statusPage.putExtra("group", group);
-                startActivity(statusPage);
+
+                //Intent statusPage = new Intent(getApplicationContext(), GroupStatusActivity.class);
+                //statusPage.putExtra("group", group);
+                //startActivity(statusPage);
             }
         });
     }

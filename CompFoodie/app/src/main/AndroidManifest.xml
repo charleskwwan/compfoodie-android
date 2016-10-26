@@ -20,8 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".BrowseActivity"
+            android:name=".CreateGroupActivity"
             android:parentActivityName=".LoginActivity">
             <!-- Meta Data for <4 support -->
             <meta-data
@@ -29,7 +30,6 @@
                 android:value=".LoginActivity" />
 
         </activity>
-        <activity android:name=".CreateGroupActivity" />
         <activity android:name=".GroupStatusActivity" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
