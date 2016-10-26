@@ -25,4 +25,6 @@
     <!-- Toolbar -->
     <string name="user_display_item_title">User</string>
     <string name="add_group_item_title">Add Group</string>
+    <!-- Drawer -->
+    <string name="drawer_logout_title">Logout</string>
 </resources>

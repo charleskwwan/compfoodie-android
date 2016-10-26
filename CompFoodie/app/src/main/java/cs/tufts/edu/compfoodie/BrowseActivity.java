@@ -1,5 +1,6 @@
 package cs.tufts.edu.compfoodie;
 
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +11,6 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 
 public class BrowseActivity extends AppCompatActivity {
-    private AccessToken accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,5 +39,15 @@ public class BrowseActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void initNavDrawer() {
+        NavigationView navDrawer = (NavigationView)findViewById(R.id.browse_drawer);
+        navDrawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                return true;
+            }
+        });
     }
 }
