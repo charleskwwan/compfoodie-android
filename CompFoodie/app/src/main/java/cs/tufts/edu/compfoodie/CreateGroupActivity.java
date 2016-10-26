@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -36,8 +37,6 @@ public class CreateGroupActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
-
-        BottomMenuBar bottombar = new BottomMenuBar(this, savedInstanceState);
 
         // ToolBar
         Toolbar toolbar = (Toolbar)findViewById(R.id.create_group_toolbar);
@@ -71,20 +70,15 @@ public class CreateGroupActivity extends AppCompatActivity  {
                 Long orderTime = getOrderTime(orderTimeStr);
 
                 //Integer orderTime = 0;
-                List<User> party = new ArrayList<User>();
+                List<FirebaseUser> party = new ArrayList<FirebaseUser>();
                 User creator = new User();
 
                 Group group = new Group(location, partyCap, partySize, orderTime, message);
 
                 database = FirebaseDatabase.getInstance();
-                //DatabaseReference groupRef = database.getReference("groups");
-                //groupRef.setValue(group);
+                DatabaseReference groupRef = database.getReference("groups");
+                groupRef.setValue(group);
 
-                // Write a message to the database
-                DatabaseReference myRef = database.getReference().child("friend");
-                myRef.setValue("FUCK");
-
-                Log.v("DEBUG", "Are we storing anything????");
                 //String addGroupURL = "https://compfoodie-server.herokuapp.com/api/addgroup";
 
                 // Redirect to status page
