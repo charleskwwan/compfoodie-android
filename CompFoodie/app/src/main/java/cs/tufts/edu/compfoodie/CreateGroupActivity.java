@@ -1,5 +1,8 @@
 package cs.tufts.edu.compfoodie;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,39 +13,43 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-public class CreateGroupActivity extends AppCompatActivity  {
+public class CreateGroupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener  {
+    private int orderHour;
+    private int orderMinute;
+    private int orderUnix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
-
-        BottomMenuBar bottombar = new BottomMenuBar(this, savedInstanceState);
-
         // ToolBar
         Toolbar toolbar = (Toolbar)findViewById(R.id.create_group_toolbar);
         toolbar.setTitle(getString(R.string.create_group_title));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // todo: need to set parent in manifest
-
         // Wait Time Picker
+        final Calendar cal = Calendar.getInstance();
+        orderHour = cal.get(Calendar.HOUR);
+        orderMinute = cal.get(Calendar.MINUTE);
         ImageButton wtbutton = (ImageButton)findViewById(R.id.wait_time_pick_button);
         wtbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WaitTimePickerFragment wtpfrag = new WaitTimePickerFragment();
-                wtpfrag.show(getFragmentManager(), "wait_time_picker_fragment");
+                WaitTimePickerFragment wtpfrag = WaitTimePickerFragment
+                        .newInstance(CreateGroupActivity.this);
+                wtpfrag.show(getFragmentManager(), "order_time_picker");
             }
         });
-
         // Create Button clicked
         Button crtbutton = (Button) findViewById(R.id.create_button);
 
@@ -50,15 +57,16 @@ public class CreateGroupActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 String message = ((EditText)findViewById(R.id.message_input)).getText().toString();
-                Integer partyCap = Integer.parseInt(((EditText)findViewById(R.id.party_size_input)).getText().toString());
+                Integer partyCap = Integer.parseInt(((EditText)findViewById(R.id.party_size_input))
+                        .getText().toString());
                 Integer partySize = 0;
-                String location = ((EditText)findViewById(R.id.location_input)).getText().toString();
-
+                String location = ((EditText)findViewById(R.id.location_input)).getText()
+                        .toString();
                 // Get order time
-                String orderTimeStr = ((TextView)findViewById(R.id.order_time_output)).getText().toString();
+                String orderTimeStr = ((TextView)findViewById(R.id.order_time_output)).getText()
+                        .toString();
                 Long orderTime = getOrderTime(orderTimeStr);
-
-                //Integer orderTime = 0;
+                // Convert to
                 List<User> party = new ArrayList<User>();
                 User creator = new User();
 
@@ -85,6 +93,12 @@ public class CreateGroupActivity extends AppCompatActivity  {
                 startActivity(statusPage);
             }
         });
+    }
+
+    // Set hour and time
+    @Override
+    public void onTimeSet(TimePicker tp, int hour, int minute) {
+
     }
 
     // Returns order time in Unix
