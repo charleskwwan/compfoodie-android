@@ -1,5 +1,7 @@
 package cs.tufts.edu.compfoodie;
 
+import android.graphics.Bitmap;
+
 import org.json.JSONObject;
 
 /**
@@ -7,6 +9,6 @@ import org.json.JSONObject;
  *      allows repsonses data to be returned directly by caller
  */
 
-public interface VolleyCallback {
-    void onSuccessResponse(JSONObject response);
+public interface VolleyCallback<T> {
+    public void onSuccessResponse(T response);
 }

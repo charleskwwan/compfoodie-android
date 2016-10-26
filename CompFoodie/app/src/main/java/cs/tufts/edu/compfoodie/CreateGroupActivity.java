@@ -69,7 +69,7 @@ public class CreateGroupActivity extends AppCompatActivity  {
 //                String addGroupURL = "http://10.0.2.2:5000/api/addgroup";
 
                 // Sending JSON new group to server
-                VolleyUtils.POST(addGroupURL, groupJSON, new VolleyCallback() {
+                VolleyUtils.POST(addGroupURL, groupJSON, new VolleyCallback<JSONObject>() {
                     @Override
                     public void onSuccessResponse(JSONObject response) {
                         try {
