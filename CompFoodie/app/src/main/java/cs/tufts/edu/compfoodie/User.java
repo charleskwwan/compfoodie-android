@@ -3,6 +3,7 @@ package cs.tufts.edu.compfoodie;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,10 @@ public class User implements Serializable {
     private String name;
     private String picUrl;
     private List<String> groups;
+
+    public User() {
+        groups = new ArrayList<String>();
+    }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

@@ -56,6 +56,7 @@ public class BrowseActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // set up drawer
         dbRef = FirebaseDatabase.getInstance().getReference();
+        user = new User();
         initNavDrawer();
         getUserInfo();
         // todo: add group list
@@ -109,8 +110,6 @@ public class BrowseActivity extends AppCompatActivity {
                 if (dataSnapshot.hasChild(user_id)) {
                     user.setGroups((List<String>)(dataSnapshot.child(user_id).child("groups")
                             .getValue()));
-                } else {
-                    user.setGroups(new ArrayList<String>()); // new user, set empty
                 }
             }
             @Override
