@@ -5,6 +5,7 @@ import android.os.CountDownTimer;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import org.json.JSONException;
@@ -19,27 +20,26 @@ import java.util.List;
  */
 @IgnoreExtraProperties
 public class Group {
-    //public String groupId = "123456789";
     public String location;
     public Double partyCap;
     public Double partySize;
     public Long orderTime;
     public String message;
-    //public List<User> party = new List<>();
-    //public User creator;
+    public String creator;
+    public List<String> guests;
 
     public Group() {
         // Default constructor required for calls to DataSnapshot.getValue(Group.class)
     }
 
-    public Group(String location, Double partyCap, Double partySize, Long orderTime, String message) {
+    public Group(String location, Double partyCap, Double partySize, Long orderTime, String message, String creator, List<String> guests) {
         this.location = location;
         this.partyCap = partyCap;
         this.partySize = partySize;
         this.orderTime = orderTime;
         this.message = message;
-        //this.party = party;
-        //this.creator = creator;
+        this.creator = creator;
+        this.guests = guests;
     }
 
     /*

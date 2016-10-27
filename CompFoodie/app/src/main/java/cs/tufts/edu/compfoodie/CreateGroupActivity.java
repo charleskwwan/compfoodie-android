@@ -1,6 +1,7 @@
 package cs.tufts.edu.compfoodie;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONObject;
 
@@ -70,16 +72,15 @@ public class CreateGroupActivity extends AppCompatActivity  {
                 Long orderTime = getOrderTime(orderTimeStr);
 
                 //Integer orderTime = 0;
-                List<FirebaseUser> party = new ArrayList<FirebaseUser>();
-                User creator = new User();
-
-                Group group = new Group(location, partyCap, partySize, orderTime, message);
+                List<String> guests = new ArrayList<>();
+                FirebaseUser creator = FirebaseAuth.getInstance().getCurrentUser();
+                guests.add(creator.getUid());
+                Group group = new Group(location, partyCap, partySize, orderTime, message, creator.getUid(), guests);
 
                 database = FirebaseDatabase.getInstance();
                 DatabaseReference groupRef = database.getReference("groups");
-                groupRef.setValue(group);
-
-                //String addGroupURL = "https://compfoodie-server.herokuapp.com/api/addgroup";
+                groupRef.push().setValue(group);
+                //String groupID = groupRef.name();
 
                 // Redirect to status page
 
