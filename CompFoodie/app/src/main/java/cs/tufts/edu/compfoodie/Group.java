@@ -23,38 +23,24 @@ public class Group {
     public String location;
     public Double partyCap;
     public Double partySize;
-    public Long orderTime;
     public String message;
     public String creator;
+    public Double hour;
+    public Double minute;
     public List<String> guests;
 
     public Group() {
         // Default constructor required for calls to DataSnapshot.getValue(Group.class)
     }
 
-    public Group(String location, Double partyCap, Double partySize, Long orderTime, String message, String creator, List<String> guests) {
+    public Group(String location, Double partyCap, Double partySize, String message, String creator, List<String> guests, Double hour, Double minute) {
         this.location = location;
         this.partyCap = partyCap;
         this.partySize = partySize;
-        this.orderTime = orderTime;
         this.message = message;
         this.creator = creator;
         this.guests = guests;
+        this.hour = hour;
+        this.minute = minute;
     }
-
-    /*
-    public JSONObject getJSON() {
-        JSONObject groupJSON = new JSONObject();
-        try {
-            groupJSON.put("location", this.location);
-            groupJSON.put("partyCap", this.partyCap);
-            groupJSON.put("partySize", this.partySize);
-            groupJSON.put("orderTime", this.orderTime);
-            groupJSON.put("message", this.message);
-            //groupJSON.put("creator", this.creator);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return groupJSON;
-    }*/
 }

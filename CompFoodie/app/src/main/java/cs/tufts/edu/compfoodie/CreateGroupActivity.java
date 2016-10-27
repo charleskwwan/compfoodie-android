@@ -37,7 +37,7 @@ import static android.R.attr.key;
 import static android.R.attr.name;
 import static android.R.attr.text;
 
-public class CreateGroupActivity extends AppCompatActivity  {
+public class CreateGroupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener  {
 
     private FirebaseDatabase database;
     private DatabaseReference groupRef;
@@ -54,11 +54,6 @@ public class CreateGroupActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // todo: need to set parent in manifest
 
-        // Wait Time Picker
-        final Calendar cal = Calendar.getInstance();
-        orderHour = cal.get(Calendar.HOUR);
-        orderMinute = cal.get(Calendar.MINUTE);
-        orderUnix = new Date().getTime();
         ImageButton wtbutton = (ImageButton)findViewById(R.id.wait_time_pick_button);
         wtbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,15 +75,17 @@ public class CreateGroupActivity extends AppCompatActivity  {
                 String location = ((EditText)findViewById(R.id.location_input)).getText().toString();
 
                 // Get order time
-                String orderTimeStr = ((TextView)findViewById(R.id.order_time_output)).getText()
-                        .toString();
-                Long orderTime = getOrderTime(orderTimeStr);
+                String orderTimeStr = ((TextView)findViewById(R.id.order_time_output)).getText().toString();
+                String[] time = orderTimeStr.split(":");
+                Double hour = Double.parseDouble(time[0]);
+                Double minute = Double.parseDouble(time[1]);
+
                 //Integer orderTime = 0;
                 List<String> guests = new ArrayList<>();
                 FirebaseUser creator = FirebaseAuth.getInstance().getCurrentUser();
                 String userID = creator.getUid();
                 guests.add(userID);
-                Group group = new Group(location, partyCap, partySize, orderTime, message, creator.getUid(), guests);
+                Group group = new Group(location, partyCap, partySize, message, creator.getUid(), guests, hour, minute);
 
                 database = FirebaseDatabase.getInstance();
                 groupRef = database.getReference("groups");
@@ -110,39 +107,9 @@ public class CreateGroupActivity extends AppCompatActivity  {
         });
     }
 
-    // Set hour and time
     @Override
     public void onTimeSet(TimePicker tp, int hour, int minute) {
-        orderHour = hour;
-        orderMinute = minute;
-
-    }
-
-
-    // Returns order time in Unix
-    private Long getOrderTime(String timeStr) {
-        Log.v("timeStr", timeStr);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
-
-        Calendar today = Calendar.getInstance();
-
-        Integer hr = Integer.parseInt(timeStr.substring(0, 2));
-        Integer min = Integer.parseInt(timeStr.substring(3, 5));
-        Integer ampm = timeStr.substring(6) == "AM" ? Calendar.AM : Calendar.PM;
-
-        today.set(Calendar.HOUR, hr);
-        today.set(Calendar.MINUTE, min);
-        today.set(Calendar.AM_PM, ampm);
-
-        Calendar rightNow = Calendar.getInstance();
-
-        if (rightNow.getTime().before(today.getTime())) {
-            Log.v("Order Time", dateFormat.format(today.getTime()));
-            return today.getTimeInMillis();
-        }
-
-        today.add(Calendar.DATE, +1);
-        Log.v("Order Time", dateFormat.format(today.getTime()));
-        return today.getTimeInMillis();
+        TextView order_time_output = (TextView)findViewById(R.id.order_time_output);
+        order_time_output.setText(Integer.toString(hour) + ":" + Integer.toString(minute));
     }
 }
