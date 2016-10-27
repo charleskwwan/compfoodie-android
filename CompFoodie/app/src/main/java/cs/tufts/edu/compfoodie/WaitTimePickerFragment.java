@@ -35,15 +35,4 @@ public class WaitTimePickerFragment extends DialogFragment {
                                                     DateFormat.is24HourFormat(getActivity()));
         return tpd;
     }
-//
-//    @Override
-//    public void onTimeSet(TimePicker tp, int hour, int minute) {
-//        TextView wtoutput = (TextView)getActivity().findViewById(R.id.order_time_output);
-//        String time_format = "";
-//        if (!DateFormat.is24HourFormat(getActivity())) {
-//            time_format = hour < 12 ? "AM" : "PM";
-//            if (hour > 12) hour %= 12;
-//        }
-//        wtoutput.setText(String.format(Locale.ENGLISH, "%02d:%02d %s", hour, minute, time_format));
-//    }
 }

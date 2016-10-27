@@ -2,7 +2,6 @@ package cs.tufts.edu.compfoodie;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -11,7 +10,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -27,23 +25,26 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BrowseActivity extends AppCompatActivity {
+    private DatabaseReference dbRef;
     private NavigationView navDrawer;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private String user_name;
-    private Bitmap user_pic;
+    private User user;
+    private Bitmap userPic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +55,10 @@ public class BrowseActivity extends AppCompatActivity {
         toolbar.setTitle(getString(R.string.browse_toolbar_title));
         setSupportActionBar(toolbar);
         // set up drawer
+        dbRef = FirebaseDatabase.getInstance().getReference();
         initNavDrawer();
         getUserInfo();
+        // todo: add group list
     }
 
     // inflates menu if action bar present (toolbar)
@@ -98,6 +101,24 @@ public class BrowseActivity extends AppCompatActivity {
 
     // make request to facebook for user's name and profile image (and id, not used)
     private void getUserInfo() {
+        final DatabaseReference usersRef = dbRef.child("users");
+        final String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(user_id)) {
+                    user.setGroups((List<String>)(dataSnapshot.child(user_id).child("groups")
+                            .getValue()));
+                } else {
+                    user.setGroups(new ArrayList<String>()); // new user, set empty
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("*** Firebase User Req", databaseError.toString());
+            }
+        });
+        // make request to fb for updated name and profile pic
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -107,23 +128,26 @@ public class BrowseActivity extends AppCompatActivity {
                             try {
                                 final View header = navDrawer.getHeaderView(0);
                                 // set name
-                                user_name = obj.getString("name");
+                                user.setName(obj.getString("name"));
                                 TextView user_name_text = (TextView)header
                                         .findViewById(R.id.user_name);
-                                user_name_text.setText(user_name);
+                                user_name_text.setText(user.getName());
                                 // set pic
-                                String pic_url = obj.getJSONObject("picture").getJSONObject("data")
-                                        .getString("url");
-                                VolleyUtils.getImage(pic_url, getApplicationContext(),
+                                user.setPicUrl(obj.getJSONObject("picture").getJSONObject("data")
+                                        .getString("url"));
+                                // send to firebase
+                                usersRef.child(user_id).setValue(user.toMap());
+                                // load image for local bitmap
+                                VolleyUtils.getImage(user.getPicUrl(), getApplicationContext(),
                                         new VolleyCallback<Bitmap>() {
                                             @Override
                                             public void onSuccessResponse(Bitmap response) {
                                                 // set pic only after async return
-                                                user_pic = getRoundedCornerBitmap(response,
+                                                userPic = getRoundedCornerBitmap(response,
                                                         response.getWidth() / 2);
                                                 ImageView user_pic_v = (ImageView)header
                                                         .findViewById(R.id.user_profile_pic);
-                                                user_pic_v.setImageBitmap(user_pic);
+                                                user_pic_v.setImageBitmap(userPic);
                                             }
                                         });
                             } catch (Exception e) {

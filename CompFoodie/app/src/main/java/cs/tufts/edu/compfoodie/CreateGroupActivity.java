@@ -26,7 +26,7 @@ import java.util.List;
 public class CreateGroupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener  {
     private int orderHour;
     private int orderMinute;
-    private int orderUnix;
+    private long orderUnix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,7 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
         final Calendar cal = Calendar.getInstance();
         orderHour = cal.get(Calendar.HOUR);
         orderMinute = cal.get(Calendar.MINUTE);
+        orderUnix = new Date().getTime();
         ImageButton wtbutton = (ImageButton)findViewById(R.id.wait_time_pick_button);
         wtbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,8 +99,11 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
     // Set hour and time
     @Override
     public void onTimeSet(TimePicker tp, int hour, int minute) {
+        orderHour = hour;
+        orderMinute = minute;
 
     }
+
 
     // Returns order time in Unix
     private Long getOrderTime(String timeStr) {
