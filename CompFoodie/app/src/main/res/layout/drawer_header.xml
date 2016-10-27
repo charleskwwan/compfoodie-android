@@ -4,22 +4,27 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="20dp"
-    android:paddingBottom="20dp"
     android:background="@color/colorPrimaryDark">
     
     <ImageView
         android:id="@+id/user_profile_pic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="fitCenter"
         android:layout_gravity="center"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@color/colorForeground"/>
     <TextView
-        android:id="@+id/user_email"
-        android:layout_width="wrap_content"
+        android:id="@+id/user_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/textColorPrimary"
+        android:textColor="@color/white"
         android:textSize="18sp"
-        android:layout_gravity="center" />
-
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:gravity="center_horizontal"
+        android:background="@color/colorPrimaryDark"
+        android:text="Name"/>
 </LinearLayout>

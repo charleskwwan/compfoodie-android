@@ -1,5 +1,8 @@
 package cs.tufts.edu.compfoodie;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -22,6 +26,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static android.R.attr.author;
@@ -50,15 +55,19 @@ public class CreateGroupActivity extends AppCompatActivity  {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // todo: need to set parent in manifest
 
         // Wait Time Picker
+        final Calendar cal = Calendar.getInstance();
+        orderHour = cal.get(Calendar.HOUR);
+        orderMinute = cal.get(Calendar.MINUTE);
+        orderUnix = new Date().getTime();
         ImageButton wtbutton = (ImageButton)findViewById(R.id.wait_time_pick_button);
         wtbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WaitTimePickerFragment wtpfrag = new WaitTimePickerFragment();
-                wtpfrag.show(getFragmentManager(), "wait_time_picker_fragment");
+                WaitTimePickerFragment wtpfrag = WaitTimePickerFragment
+                        .newInstance(CreateGroupActivity.this);
+                wtpfrag.show(getFragmentManager(), "order_time_picker");
             }
         });
-
         // Create Button clicked
         Button crtbutton = (Button) findViewById(R.id.create_button);
 
@@ -71,9 +80,9 @@ public class CreateGroupActivity extends AppCompatActivity  {
                 String location = ((EditText)findViewById(R.id.location_input)).getText().toString();
 
                 // Get order time
-                String orderTimeStr = ((TextView)findViewById(R.id.order_time_output)).getText().toString();
+                String orderTimeStr = ((TextView)findViewById(R.id.order_time_output)).getText()
+                        .toString();
                 Long orderTime = getOrderTime(orderTimeStr);
-
                 //Integer orderTime = 0;
                 List<String> guests = new ArrayList<>();
                 FirebaseUser creator = FirebaseAuth.getInstance().getCurrentUser();
@@ -100,6 +109,15 @@ public class CreateGroupActivity extends AppCompatActivity  {
             }
         });
     }
+
+    // Set hour and time
+    @Override
+    public void onTimeSet(TimePicker tp, int hour, int minute) {
+        orderHour = hour;
+        orderMinute = minute;
+
+    }
+
 
     // Returns order time in Unix
     private Long getOrderTime(String timeStr) {

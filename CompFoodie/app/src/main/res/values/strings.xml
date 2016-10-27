@@ -27,4 +27,6 @@
     <string name="add_group_item_title">Add Group</string>
     <!-- Drawer -->
     <string name="drawer_logout_title">Logout</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
 </resources>

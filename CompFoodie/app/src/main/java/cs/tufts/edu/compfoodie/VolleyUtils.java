@@ -1,6 +1,10 @@
 package cs.tufts.edu.compfoodie;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -14,6 +18,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -26,7 +31,8 @@ import org.json.JSONObject;
  */
 
 public class VolleyUtils { // implements Response.Listener<JSONObject>, Response.ErrorListener {
-    public static void POST (String url, JSONObject json, final VolleyCallback callback) {
+    public static void POST (String url, JSONObject json,
+                             final VolleyCallback<JSONObject> callback) {
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url, json,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -53,6 +59,33 @@ public class VolleyUtils { // implements Response.Listener<JSONObject>, Response
                             Log.e("Volley", "NetworkError");
                         } else if (error instanceof ParseError) {
                             Log.e("Volley", "ParseError");
+                        }
+                    }
+                });
+        ApplicationController.getInstance().addToRequestQueue(req);
+    }
+
+    public static void getImage(String url, final Context context,
+                                final VolleyCallback<Bitmap> callback) {
+        ImageRequest req = new ImageRequest(url,
+                new Response.Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap bitmap) {
+                        callback.onSuccessResponse(bitmap);
+                    }
+                }, 0, 0, ImageView.ScaleType.FIT_CENTER, null,
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error instanceof TimeoutError) {
+                            Toast.makeText(context, "Connection timed out", Toast.LENGTH_SHORT)
+                                    .show();
+                        } else if (error instanceof NoConnectionError) {
+                            Toast.makeText(context, "Connection could not be established",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Something went wrong getting an image",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
