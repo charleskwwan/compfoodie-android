@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static android.R.attr.author;
 import static android.R.attr.category;
 import static android.R.attr.data;
 import static android.R.attr.enabled;
@@ -34,6 +35,8 @@ import static android.R.attr.text;
 public class CreateGroupActivity extends AppCompatActivity  {
 
     private FirebaseDatabase database;
+    private DatabaseReference groupRef;
+    private DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,19 +77,26 @@ public class CreateGroupActivity extends AppCompatActivity  {
                 //Integer orderTime = 0;
                 List<String> guests = new ArrayList<>();
                 FirebaseUser creator = FirebaseAuth.getInstance().getCurrentUser();
-                guests.add(creator.getUid());
+                String userID = creator.getUid();
+                guests.add(userID);
                 Group group = new Group(location, partyCap, partySize, orderTime, message, creator.getUid(), guests);
 
                 database = FirebaseDatabase.getInstance();
-                DatabaseReference groupRef = database.getReference("groups");
-                groupRef.push().setValue(group);
-                //String groupID = groupRef.name();
+                groupRef = database.getReference("groups");
+
+                //groupRef.push().setValue(group);
+                String groupID = groupRef.push().getKey();
+                groupRef.child(groupID).setValue(group);
+                Log.v("groupID", groupID);
+
+                userRef = database.getReference("users");
+                userRef.child(userID).child("groups").push().setValue(groupID);
 
                 // Redirect to status page
 
-                //Intent statusPage = new Intent(getApplicationContext(), GroupStatusActivity.class);
-                //statusPage.putExtra("group", group);
-                //startActivity(statusPage);
+                Intent statusPage = new Intent(getApplicationContext(), GroupStatusActivity.class);
+                statusPage.putExtra("userID", userID);
+                startActivity(statusPage);
             }
         });
     }
