@@ -1,6 +1,8 @@
 package cs.tufts.edu.compfoodie;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -56,8 +58,8 @@ public class BrowseActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // set up drawer
         dbRef = FirebaseDatabase.getInstance().getReference();
-        user = new User();
         initNavDrawer();
+        user = new User(); // todo: scan for usre in bundle
         getUserInfo();
         // todo: add group list
     }
@@ -76,7 +78,9 @@ public class BrowseActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(Gravity.RIGHT);
                 return true;
             case R.id.add_group_item:
-                // todo: open fragment to create new group
+                Intent createPage = new Intent(getApplicationContext(), CreateGroupActivity.class);
+                createPage.putExtra(getString(R.string.currentUserKey), user);
+                startActivity(createPage);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -90,7 +94,7 @@ public class BrowseActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 int id = menuItem.getItemId();
-                switch(id) {
+                switch(id) { // todo: add button for browsing existing groups
                     case R.id.drawer_logout:
                         logout();
                 }
@@ -107,9 +111,12 @@ public class BrowseActivity extends AppCompatActivity {
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(user_id)) {
-                    user.setGroups((List<String>)(dataSnapshot.child(user_id).child("groups")
-                            .getValue()));
+                if (dataSnapshot.hasChild(user_id)) { // check if groups exist in database
+                    user.groups = (List<String>)dataSnapshot.child(user_id).child("groups")
+                            .getValue();
+                    if (user.groups == null) { // if groups didnt exist already, would be null
+                        user.groups = new ArrayList<String>();
+                    }
                 }
             }
             @Override
@@ -127,17 +134,17 @@ public class BrowseActivity extends AppCompatActivity {
                             try {
                                 final View header = navDrawer.getHeaderView(0);
                                 // set name
-                                user.setName(obj.getString("name"));
+                                user.name = (obj.getString("name"));
                                 TextView user_name_text = (TextView)header
                                         .findViewById(R.id.user_name);
-                                user_name_text.setText(user.getName());
+                                user_name_text.setText(user.name);
                                 // set pic
-                                user.setPicUrl(obj.getJSONObject("picture").getJSONObject("data")
-                                        .getString("url"));
+                                user.picUrl = obj.getJSONObject("picture").getJSONObject("data")
+                                        .getString("url");
                                 // send to firebase
-                                usersRef.child(user_id).setValue(user.toMap());
+                                usersRef.child(user_id).setValue(user);
                                 // load image for local bitmap
-                                VolleyUtils.getImage(user.getPicUrl(), getApplicationContext(),
+                                VolleyUtils.getImage(user.picUrl, getApplicationContext(),
                                         new VolleyCallback<Bitmap>() {
                                             @Override
                                             public void onSuccessResponse(Bitmap response) {

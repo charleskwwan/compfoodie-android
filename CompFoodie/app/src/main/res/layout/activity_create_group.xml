@@ -151,6 +151,16 @@
             android:background="@color/colorAccent"
             android:textColor="@color/white"/>
 
+        <TextView
+            android:id="@+id/alert_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/create_button"
+            android:textColor="@color/red"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:text="" />
+
     </RelativeLayout>
 
 </RelativeLayout>

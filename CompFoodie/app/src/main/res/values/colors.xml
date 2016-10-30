@@ -12,4 +12,6 @@
     <color name="textColorPrimaryInverse">#ffffff</color>
     <color name="textColorSecondary">#26b6db</color>
     <color name="textColorSecondaryInverse">#b3ffffff</color>
+    <!-- Generic colors -->
+    <color name="red">#ff0000</color>
 </resources>

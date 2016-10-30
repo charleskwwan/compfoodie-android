@@ -22,6 +22,7 @@ public class WaitTimePickerFragment extends DialogFragment {
 
     public static WaitTimePickerFragment newInstance(TimePickerDialog.OnTimeSetListener listener) {
         WaitTimePickerFragment wtpicker = new WaitTimePickerFragment();
+        wtpicker.setStyle(DialogFragment.STYLE_NORMAL, R.style.CompFoodie);
         wtpicker.timeSetListener = listener;
         return wtpicker;
     }

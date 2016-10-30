@@ -20,17 +20,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".CreateGroupActivity"
+            android:name=".BrowseActivity"
             android:parentActivityName=".LoginActivity">
             <!-- Meta Data for <4 support -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LoginActivity" />
+        </activity>
+        <activity
+            android:name=".CreateGroupActivity"
+            android:parentActivityName=".BrowseActivity">
+            <!-- Meta Data for <4 support -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".BrowseActivity" />
 
         </activity>
-        <activity android:name=".GroupStatusActivity" />
+        <activity
+            android:name=".GroupStatusActivity"
+            android:parentActivityName=".BrowseActivity">
+        <!-- Meta Data for <4 support -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".BrowseActivity" />
+        </activity>
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />

@@ -71,8 +71,8 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("*** Firebase Auth", "User " + user.getUid() + " signed in");
                     Toast.makeText(LoginActivity.this, "Logged in as " + user.getDisplayName(),
                                    Toast.LENGTH_SHORT).show();
-                    Intent goToCreate = new Intent(getApplicationContext(), CreateGroupActivity.class);
-                    startActivity(goToCreate);
+                    Intent browsePage = new Intent(getApplicationContext(), BrowseActivity.class);
+                    startActivity(browsePage);
                 } else { // user not signed in/signed out
                     Log.d("*** Firebase Auth", "User not signed in");
                 }

@@ -17,6 +17,8 @@ import java.util.List;
 
 /**
  * Created by charlw on 9/27/16.
+ *      represents an order group
+ *      made public for interaction with firebase
  */
 @IgnoreExtraProperties
 public class Group {
@@ -33,7 +35,8 @@ public class Group {
         // Default constructor required for calls to DataSnapshot.getValue(Group.class)
     }
 
-    public Group(String location, Double partyCap, Double partySize, String message, String creator, List<String> guests, Double hour, Double minute) {
+    public Group(String location, Double partyCap, Double partySize, String message, String creator,
+                 List<String> guests, Double hour, Double minute) {
         this.location = location;
         this.partyCap = partyCap;
         this.partySize = partySize;
