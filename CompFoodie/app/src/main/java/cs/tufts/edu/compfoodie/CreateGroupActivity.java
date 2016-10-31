@@ -48,6 +48,7 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
     private DatabaseReference groupRef;
     private DatabaseReference userRef;
     private User user;
+    private Group group;
     private double orderHour;
     private double orderMinute;
     private EditText locationText;
@@ -67,7 +68,6 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // get user from intent
         user = (User)getIntent().getSerializableExtra(getString(R.string.currentUserKey));
-        Toast.makeText(this, user.name, Toast.LENGTH_SHORT).show();
         // get text fields
         locationText = (EditText)findViewById(R.id.location_input);
         partyCapText = (EditText)findViewById(R.id.party_size_input);
@@ -105,11 +105,13 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
     @Override
     public void onTimeSet(TimePicker tp, int hour, int minute) {
         TextView order_time_output = (TextView)findViewById(R.id.order_time_output);
-        String hstr = String.format(Locale.ENGLISH, "%02d", hour);
-        String mstr = String.format(Locale.ENGLISH, "%02d", minute);
         orderHour = hour;
         orderMinute = minute;
-        order_time_output.setText(hstr + ":" + mstr);
+        String tformat = hour < 12 ? "AM" : "PM";
+        hour %= 12;
+        String hstr = String.format(Locale.ENGLISH, "%02d", hour);
+        String mstr = String.format(Locale.ENGLISH, "%02d", minute);
+        order_time_output.setText(hstr + ":" + mstr + " " + tformat);
     }
 
     // checks that there is input in all required text fields
@@ -136,8 +138,8 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
         List<String> guests = new ArrayList<String>();
         guests.add(creatorId);
         // create group
-        Group group = new Group(location, partyCap, partySize, message, creatorId, guests,
-                orderHour, orderMinute);
+        group = new Group(location, partyCap, partySize, message, creatorId, guests, orderHour,
+                orderMinute);
         // add to database
         database = FirebaseDatabase.getInstance();
         groupRef = database.getReference("groups");
@@ -153,6 +155,7 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
     private void goToStatus() {
         Intent statusPage = new Intent(getApplicationContext(), GroupStatusActivity.class);
         statusPage.putExtra(getString(R.string.currentUserKey), user);
+        statusPage.putExtra(getString(R.string.currentGroupKey), group);
         startActivity(statusPage);
     }
 }

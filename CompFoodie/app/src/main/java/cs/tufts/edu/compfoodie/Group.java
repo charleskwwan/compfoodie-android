@@ -21,7 +21,7 @@ import java.util.List;
  *      made public for interaction with firebase
  */
 @IgnoreExtraProperties
-public class Group {
+public class Group implements Serializable {
     public String location;
     public Double partyCap;
     public Double partySize;

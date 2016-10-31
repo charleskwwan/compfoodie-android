@@ -94,9 +94,13 @@ public class BrowseActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 int id = menuItem.getItemId();
-                switch(id) { // todo: add button for browsing existing groups
+                switch(id) {
+                    case R.id.drawer_my_groups:
+                        // todo: go to my groups page
+                        break;
                     case R.id.drawer_logout:
                         logout();
+                        break;
                 }
                 return true;
             }
@@ -149,8 +153,8 @@ public class BrowseActivity extends AppCompatActivity {
                                             @Override
                                             public void onSuccessResponse(Bitmap response) {
                                                 // set pic only after async return
-                                                userPic = getRoundedCornerBitmap(response,
-                                                        response.getWidth() / 2);
+                                                userPic = ImageTransform.getRoundedCornerBitmap(
+                                                        response, response.getWidth() / 2);
                                                 ImageView user_pic_v = (ImageView)header
                                                         .findViewById(R.id.user_profile_pic);
                                                 user_pic_v.setImageBitmap(userPic);
@@ -177,29 +181,5 @@ public class BrowseActivity extends AppCompatActivity {
         Toast.makeText(BrowseActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
         Intent goToLogin = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(goToLogin);
-    }
-
-    // rounds corners of a bitmap
-    // http://stackoverflow.com/questions/18229358/bitmap-in-imageview-with-rounded-corners
-    private static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
-                .getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-        final float roundPx = pixels;
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        return output;
     }
 }
