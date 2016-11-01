@@ -47,6 +47,7 @@ public class BrowseActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private User user;
+    private String userID;
     private Bitmap userPic;
     private List<String> userGroups = new ArrayList<>();
     private List<String> otherGroups = new ArrayList<>();
@@ -64,24 +65,21 @@ public class BrowseActivity extends AppCompatActivity {
         initNavDrawer();
         // get user
         setUser();
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         // todo: add group list
 
-        FirebaseUser creator = FirebaseAuth.getInstance().getCurrentUser();
-        String creatorID = creator.getUid();
-
-
-        /*
-        displayUserGroups(creatorID);
-        UsersAdapter userGroupsAdapter = new GroupsAdapter(this, userGroups.toArray(new String[userGroups.size()]));
-        userGroups.setAdapter(userGroupsAdapter);
+        displayUserGroups();
+        GroupsAdapter userGroupsAdapter = new GroupsAdapter(this, userGroups.toArray(new String[userGroups.size()]));
+        ListView userGroupsLV = (ListView)findViewById(R.id.browse_user_groups);
+        userGroupsLV.setAdapter(userGroupsAdapter);
 
         displayOtherGroups();
-        UsersAdapter otherGroupsAdapter = new GroupsAdapter(this, otherGroups.toArray(new String[otherGroups.size()]));
-        otherGroups.setAdapter(otherGroupsAdapter);
-        */
+        GroupsAdapter otherGroupsAdapter = new GroupsAdapter(this, otherGroups.toArray(new String[otherGroups.size()]));
+        ListView otherGroupsLV = (ListView)findViewById(R.id.browse_other_groups);
+        otherGroupsLV.setAdapter(otherGroupsAdapter);
     }
 
-    public void displayUserGroups(final String userID) {
+    public void displayUserGroups() {
         DatabaseReference userRef = dbRef.child("users").child(userID).child("groups");
         Log.v("displayUserGroups" , "displayUserGroups");
         ValueEventListener userListener = new ValueEventListener() {
