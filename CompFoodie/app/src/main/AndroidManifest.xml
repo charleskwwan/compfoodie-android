@@ -23,6 +23,7 @@
         <activity
             android:name=".BrowseActivity"
             android:parentActivityName=".LoginActivity">
+
             <!-- Meta Data for <4 support -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -31,20 +32,22 @@
         <activity
             android:name=".CreateGroupActivity"
             android:parentActivityName=".BrowseActivity">
+
             <!-- Meta Data for <4 support -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".BrowseActivity" />
-
         </activity>
         <activity
             android:name=".GroupStatusActivity"
             android:parentActivityName=".BrowseActivity">
-        <!-- Meta Data for <4 support -->
+
+            <!-- Meta Data for <4 support -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".BrowseActivity" />
         </activity>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -55,6 +58,16 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             tools:replace="android:theme" />
+
+        <activity
+            android:name=".MyGroupsActivity"
+            android:parentActivityName=".BrowseActivity">
+
+            <!-- Meta Data for <4 support -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".BrowseActivity" />
+        </activity>
     </application>
 
 </manifest>

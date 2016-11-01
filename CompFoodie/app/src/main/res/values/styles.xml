@@ -15,4 +15,8 @@
         <!-- Fonts -->
     </style>
 
+    <style name="CompFoodie.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="CompFoodie.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

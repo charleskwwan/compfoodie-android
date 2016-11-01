@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-        <style name="CompFoodie" parent="Theme.AppCompat.Light.NoActionBar">
-                <!-- Customize your theme here. -->
-                <item name="colorPrimary">@color/colorPrimary</item>
-                <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-                <item name="colorAccent">@color/colorAccent</item>
-                <item name="android:colorBackground">@color/colorBackground</item>
-                <item name="android:colorForeground">@color/colorForeground</item>
-                <item name="android:navigationBarColor">@color/navBarColor</item>
-                <item name="android:statusBarColor">@color/statBarColor</item>
-                <item name="android:textColorPrimary">@color/textColorPrimary</item>
-                <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
-                <item name="android:textColorSecondary">@color/textColorSecondary</item>
-                <item name="android:textColorSecondaryInverse">@color/textColorSecondaryInverse
-                </item>
-        </style>
+    <style name="CompFoodie" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="android:colorForeground">@color/colorForeground</item>
+        <item name="android:navigationBarColor">@color/navBarColor</item>
+        <item name="android:statusBarColor">@color/statBarColor</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:textColorSecondaryInverse">@color/textColorSecondaryInverse
+        </item>
+    </style>
 </resources>

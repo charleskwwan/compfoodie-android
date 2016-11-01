@@ -24,6 +24,8 @@
     <string name="login_toolbar_title">Login</string>
     <!-- Browse -->
     <string name="browse_toolbar_title">Browse</string>
+    <!-- Browse -->
+    <string name="my_groups_toolbar_title">My Groups</string>
     <!-- Bottom Bar -->
     <string name="browse_item_text">Browse</string>
     <string name="groups_item_text">Groups</string>
@@ -36,4 +38,5 @@
     <string name="drawer_logout_title">Logout</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="title_activity_my_groups">MyGroupsActivity</string>
 </resources>

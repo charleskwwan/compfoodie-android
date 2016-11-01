@@ -50,7 +50,6 @@ public class BrowseActivity extends AppCompatActivity {
     private User user;
     private String userID;
     private Bitmap userPic;
-    private List<String> userGroups = new ArrayList<>();
     private List<String> otherGroups = new ArrayList<>();
 
     @Override
@@ -67,38 +66,18 @@ public class BrowseActivity extends AppCompatActivity {
         // get user
         setUser();
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        // todo: add group list
 
-        populateUserGroups();
-        populateOtherGroups();
+        populateGroups();
     }
 
-    public void populateUserGroups() {
-        DatabaseReference userRef = dbRef.child("users").child(userID).child("groups");
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot userSnap) {
-                userGroups = (List<String>) userSnap.getValue();
-                assert (userGroups.size() > 0);
-                populateGroupsLV(userGroups, R.id.browse_user_groups);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        userRef.addValueEventListener(userListener);
-    }
-
-    public void populateOtherGroups() {
+    public void populateGroups() {
         DatabaseReference groupRef = dbRef.child("groups");
 
         ValueEventListener groupListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot groupsSnap) {
                 for (DataSnapshot groupSnap : groupsSnap.getChildren()) {
-                    String groupID = groupSnap.getKey();
-                    if (userGroups.contains(groupID) == false) otherGroups.add(groupID);
+                    otherGroups.add(groupSnap.getKey());
                 }
                 populateGroupsLV(otherGroups, R.id.browse_other_groups);
             }
@@ -149,7 +128,8 @@ public class BrowseActivity extends AppCompatActivity {
                 int id = menuItem.getItemId();
                 switch(id) {
                     case R.id.drawer_my_groups:
-                        // todo: go to my groups page
+                        Intent myGroupsPage = new Intent(getApplicationContext(), MyGroupsActivity.class);
+                        startActivity(myGroupsPage);
                         break;
                     case R.id.drawer_logout:
                         logout();
@@ -244,6 +224,4 @@ public class BrowseActivity extends AppCompatActivity {
         Intent goToLogin = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(goToLogin);
     }
-
-
 }
