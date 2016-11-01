@@ -49,6 +49,7 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
     private DatabaseReference userRef;
     private User user;
     private Group group;
+    private String groupId;
     private double orderHour;
     private double orderMinute;
     private EditText locationText;
@@ -143,7 +144,7 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
         // add to database
         database = FirebaseDatabase.getInstance();
         groupRef = database.getReference("groups");
-        String groupId = groupRef.push().getKey();
+        groupId = groupRef.push().getKey();
         groupRef.child(groupId).setValue(group);
         Log.v("*** New Group Added", groupId);
         // adds the group to the users entry
@@ -156,6 +157,7 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
         Intent statusPage = new Intent(getApplicationContext(), GroupStatusActivity.class);
         statusPage.putExtra(getString(R.string.currentUserKey), user);
         statusPage.putExtra(getString(R.string.currentGroupKey), group);
+        statusPage.putExtra(getString(R.string.currentGroupIdKey), groupId);
         startActivity(statusPage);
     }
 }

@@ -29,6 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
@@ -61,8 +62,8 @@ public class BrowseActivity extends AppCompatActivity {
         // set up drawer
         dbRef = FirebaseDatabase.getInstance().getReference();
         initNavDrawer();
-        user = new User(); // todo: scan for usre in bundle
-        getUserInfo();
+        // get user
+        setUser();
         // todo: add group list
 
         FirebaseUser creator = FirebaseAuth.getInstance().getCurrentUser();
@@ -169,27 +170,12 @@ public class BrowseActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout)findViewById(R.id.browse_drawer_layout);
     }
 
-    // make request to facebook for user's name and profile image (and id, not used)
-    private void getUserInfo() {
-        final DatabaseReference usersRef = dbRef.child("users");
-        final String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(user_id)) { // check if groups exist in database
-                    user.groups = (List<String>)dataSnapshot.child(user_id).child("groups")
-                            .getValue();
-                    if (user.groups == null) { // if groups didnt exist already, would be null
-                        user.groups = new ArrayList<String>();
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("*** Firebase User Req", databaseError.toString());
-            }
-        });
-        // make request to fb for updated name and profile pic
+    // creates a new user from scratch
+    private User createNewUser() {
+        final User newUser = new User();
+
+        newUser.groups = new ArrayList<String>();
+        // make request to fb for name and pic
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -198,29 +184,10 @@ public class BrowseActivity extends AppCompatActivity {
                         if (response != null && obj != null) {
                             try {
                                 final View header = navDrawer.getHeaderView(0);
-                                // set name
-                                user.name = (obj.getString("name"));
-                                TextView user_name_text = (TextView)header
-                                        .findViewById(R.id.user_name);
-                                user_name_text.setText(user.name);
-                                // set pic
-                                user.picUrl = obj.getJSONObject("picture").getJSONObject("data")
+                                // set user info
+                                newUser.name = obj.getString("name");
+                                newUser.picUrl = obj.getJSONObject("picture").getJSONObject("data")
                                         .getString("url");
-                                // send to firebase
-                                usersRef.child(user_id).setValue(user);
-                                // load image for local bitmap
-                                VolleyUtils.getImage(user.picUrl, getApplicationContext(),
-                                        new VolleyCallback<Bitmap>() {
-                                            @Override
-                                            public void onSuccessResponse(Bitmap response) {
-                                                // set pic only after async return
-                                                userPic = ImageTransform.getRoundedCornerBitmap(
-                                                        response, response.getWidth() / 2);
-                                                ImageView user_pic_v = (ImageView)header
-                                                        .findViewById(R.id.user_profile_pic);
-                                                user_pic_v.setImageBitmap(userPic);
-                                            }
-                                        });
                             } catch (Exception e) {
                                 Log.e("*** FB Graph Request", e.toString());
                             }
@@ -228,11 +195,54 @@ public class BrowseActivity extends AppCompatActivity {
                             Log.e("*** FB Graph Request", "Could not reach Facebook");
                         }
                     }
-                });
+                }
+        );
         Bundle params = new Bundle();
         params.putString("fields", "id,name,picture.type(large)");
         request.setParameters(params);
         request.executeAsync();
+
+        return newUser;
+    }
+
+    // attempts to get the user from firebase. if not present, creates a new one
+    private void setUser() {
+        final DatabaseReference usersRef = dbRef.child("users");
+        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(userId)) {
+                    user = dataSnapshot.child(userId).getValue(User.class);
+                    if (user.groups == null) {
+                        user.groups = new ArrayList<String>();
+                    }
+                } else {
+                    user = createNewUser();
+                    usersRef.child(userId).push().setValue(user);
+                }
+                final View header = navDrawer.getHeaderView(0);
+                // set name in drawer
+                TextView userNameView = (TextView)header.findViewById(R.id.user_name);
+                userNameView.setText(user.name);
+                // set image
+                VolleyUtils.getImage(user.picUrl, getApplicationContext(),
+                        new VolleyCallback<Bitmap>() {
+                    @Override
+                    public void onSuccessResponse(Bitmap response) {
+                        userPic = ImageTransform.getRoundedCornerBitmap(response,
+                                response.getWidth() / 2);
+                        ImageView userPicView = (ImageView)header.findViewById(
+                                R.id.user_profile_pic);
+                        userPicView.setImageBitmap(userPic);
+                    }
+                });
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("*** Firebase User Req", databaseError.toString());
+            }
+        });
     }
 
     // logout and return to login screen

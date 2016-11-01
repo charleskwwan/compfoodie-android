@@ -13,6 +13,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -29,12 +30,14 @@ public class GroupStatusActivity extends AppCompatActivity {
 //    private ListView lv;
     private User user;
     private Group group;
+    private String groupId;
     private TextView locationOutput;
     private TextView orderTimeOutput;
     private TextView messageOutput;
     private TextView partyCountOutput;
     private ListView partyList;
     private UsersAdapter partyListAdapter;
+    private DatabaseReference guestsRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class GroupStatusActivity extends AppCompatActivity {
         // get intent info
         user = (User)getIntent().getSerializableExtra(getString(R.string.currentUserKey));
         group = (Group)getIntent().getSerializableExtra(getString(R.string.currentGroupKey));
+        groupId = (String)getIntent().getSerializableExtra(getString(R.string.currentGroupIdKey));
         // get status page text fields
         locationOutput = (TextView)findViewById(R.id.location_output);
         orderTimeOutput = (TextView)findViewById(R.id.order_time_output);
@@ -56,8 +60,25 @@ public class GroupStatusActivity extends AppCompatActivity {
         partyList = (ListView)findViewById(R.id.party_list);
         // set status first time
         setStatus();
+        // create listener for party
+        guestsRef = FirebaseDatabase.getInstance().getReference().child("groups").child(groupId)
+            .child("guests");
+        ValueEventListener guestsListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
+                List<String> guests = dataSnapshot.getValue(t);
+                populateParty(guests);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("*** Users Listener", databaseError.toString());
+            }
+        };
+        guestsRef.addValueEventListener(guestsListener);
     }
 
+    // fills all relevant text fields in the layout
     private void setStatus() {
         locationOutput.setText(group.location);
         int orderHour = group.hour.intValue();
@@ -69,8 +90,11 @@ public class GroupStatusActivity extends AppCompatActivity {
         String orderTimeStr = String.format(Locale.ENGLISH, "%d/%d", group.partySize.intValue(),
                 group.partyCap.intValue());
         partyCountOutput.setText(orderTimeStr);
-        partyListAdapter = new UsersAdapter(this, group.guests.toArray(
-                new String[group.guests.size()]));
-        partyList.setAdapter(partyListAdapter); // can add to adapter at any time by add
+    }
+
+    // puts a list of guests (ids) into the guests list view
+    private void populateParty(List<String> guests) {
+        partyListAdapter = new UsersAdapter(this, guests.toArray(new String[guests.size()]));
+        partyList.setAdapter(partyListAdapter); // can add to adapter using add function
     }
 }
