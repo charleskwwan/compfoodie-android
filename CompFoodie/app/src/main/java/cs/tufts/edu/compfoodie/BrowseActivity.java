@@ -40,6 +40,7 @@ import java.util.List;
 import static android.R.string.no;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static com.facebook.internal.SmartLoginOption.None;
+import static cs.tufts.edu.compfoodie.R.id.browse_other_groups;
 
 public class BrowseActivity extends AppCompatActivity {
     private DatabaseReference dbRef;
@@ -68,28 +69,18 @@ public class BrowseActivity extends AppCompatActivity {
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         // todo: add group list
 
-        displayUserGroups();
-        GroupsAdapter userGroupsAdapter = new GroupsAdapter(this, userGroups.toArray(new String[userGroups.size()]));
-        ListView userGroupsLV = (ListView)findViewById(R.id.browse_user_groups);
-        userGroupsLV.setAdapter(userGroupsAdapter);
-
-        displayOtherGroups();
-        GroupsAdapter otherGroupsAdapter = new GroupsAdapter(this, otherGroups.toArray(new String[otherGroups.size()]));
-        ListView otherGroupsLV = (ListView)findViewById(R.id.browse_other_groups);
-        otherGroupsLV.setAdapter(otherGroupsAdapter);
+        populateUserGroups();
+        populateOtherGroups();
     }
 
-    public void displayUserGroups() {
+    public void populateUserGroups() {
         DatabaseReference userRef = dbRef.child("users").child(userID).child("groups");
-        Log.v("displayUserGroups" , "displayUserGroups");
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot userSnap) {
-                Log.v("USERID", userID);
-                List<String> userGroups = (List<String>) userSnap.getValue();
-                if (userGroups == null) {
-                    return;
-                }
+                userGroups = (List<String>) userSnap.getValue();
+                assert (userGroups.size() > 0);
+                populateGroupsLV(userGroups, R.id.browse_user_groups);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -99,22 +90,17 @@ public class BrowseActivity extends AppCompatActivity {
         userRef.addValueEventListener(userListener);
     }
 
-    public void displayOtherGroups() {
+    public void populateOtherGroups() {
         DatabaseReference groupRef = dbRef.child("groups");
-        Log.v("displayOtherGroups" , "displayOtherGroups");
 
         ValueEventListener groupListener = new ValueEventListener() {
-            List<String> textList = new ArrayList<>();
-
             @Override
             public void onDataChange(DataSnapshot groupsSnap) {
                 for (DataSnapshot groupSnap : groupsSnap.getChildren()) {
                     String groupID = groupSnap.getKey();
-                    if (userGroups.contains(groupID)) {
-                        continue;
-                    }
-                    otherGroups.add(groupID);
+                    if (userGroups.contains(groupID) == false) otherGroups.add(groupID);
                 }
+                populateGroupsLV(otherGroups, R.id.browse_other_groups);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -122,6 +108,13 @@ public class BrowseActivity extends AppCompatActivity {
             }
         };
         groupRef.addValueEventListener(groupListener);
+    }
+
+    public void populateGroupsLV(List<String> groups, int viewID) {
+        Log.v("groupSize", String.valueOf(groups.size()));
+        GroupsAdapter groupsAdapter = new GroupsAdapter(this, groups.toArray(new String[groups.size()]));
+        ListView groupsLV = (ListView)findViewById(viewID);
+        groupsLV.setAdapter(groupsAdapter);
     }
 
     // inflates menu if action bar present (toolbar)
