@@ -2,14 +2,7 @@ package cs.tufts.edu.compfoodie;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +13,9 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +24,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,6 +36,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.string.no;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+import static com.facebook.internal.SmartLoginOption.None;
+
 public class BrowseActivity extends AppCompatActivity {
     private DatabaseReference dbRef;
     private NavigationView navDrawer;
@@ -47,6 +47,8 @@ public class BrowseActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private User user;
     private Bitmap userPic;
+    private List<String> userGroups = new ArrayList<>();
+    private List<String> otherGroups = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,65 @@ public class BrowseActivity extends AppCompatActivity {
         user = new User(); // todo: scan for usre in bundle
         getUserInfo();
         // todo: add group list
+
+        FirebaseUser creator = FirebaseAuth.getInstance().getCurrentUser();
+        String creatorID = creator.getUid();
+
+
+        /*
+        displayUserGroups(creatorID);
+        UsersAdapter userGroupsAdapter = new GroupsAdapter(this, userGroups.toArray(new String[userGroups.size()]));
+        userGroups.setAdapter(userGroupsAdapter);
+
+        displayOtherGroups();
+        UsersAdapter otherGroupsAdapter = new GroupsAdapter(this, otherGroups.toArray(new String[otherGroups.size()]));
+        otherGroups.setAdapter(otherGroupsAdapter);
+        */
+    }
+
+    public void displayUserGroups(final String userID) {
+        DatabaseReference userRef = dbRef.child("users").child(userID).child("groups");
+        Log.v("displayUserGroups" , "displayUserGroups");
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot userSnap) {
+                Log.v("USERID", userID);
+                List<String> userGroups = (List<String>) userSnap.getValue();
+                if (userGroups == null) {
+                    return;
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        userRef.addValueEventListener(userListener);
+    }
+
+    public void displayOtherGroups() {
+        DatabaseReference groupRef = dbRef.child("groups");
+        Log.v("displayOtherGroups" , "displayOtherGroups");
+
+        ValueEventListener groupListener = new ValueEventListener() {
+            List<String> textList = new ArrayList<>();
+
+            @Override
+            public void onDataChange(DataSnapshot groupsSnap) {
+                for (DataSnapshot groupSnap : groupsSnap.getChildren()) {
+                    String groupID = groupSnap.getKey();
+                    if (userGroups.contains(groupID)) {
+                        continue;
+                    }
+                    otherGroups.add(groupID);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        groupRef.addValueEventListener(groupListener);
     }
 
     // inflates menu if action bar present (toolbar)
@@ -182,4 +243,6 @@ public class BrowseActivity extends AppCompatActivity {
         Intent goToLogin = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(goToLogin);
     }
+
+
 }

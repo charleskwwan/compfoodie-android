@@ -56,59 +56,6 @@ public class GroupStatusActivity extends AppCompatActivity {
         partyList = (ListView)findViewById(R.id.party_list);
         // set status first time
         setStatus();
-//
-//        database = FirebaseDatabase.getInstance();
-//        userID = getIntent().getStringExtra("userID");
-//        userRef = database.getReference("users").child(userID).child("groups");
-//
-//
-//        ValueEventListener userListener = new ValueEventListener() {
-//            List<String> textList = new ArrayList<>();
-//
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-//                    String groupID = snapshot.getValue(String.class);
-//                    DatabaseReference groupRef = database.getReference("groups").child(groupID);
-//
-//                    ValueEventListener groupListener = new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            Group group = dataSnapshot.getValue(Group.class);
-//                            String text = String.format("%s. Order at %f:%f in %s. %.0f / %.0f have joined you.", group.message, group.hour, group.minute, group.location, group.partySize, group.partyCap);
-//                            Log.v("text", text);
-//                            //textList.add(text);
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(DatabaseError databaseError) {
-//                            // Getting Post failed, log a message
-//                            Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-//                            // ...
-//                        }
-//                    };
-//
-//                    // TODO populate the page with everything in textList
-//
-//                    groupRef.addValueEventListener(groupListener);
-//
-//                    /*
-//                    lv = (ListView)findViewById(R.id.group_status_list);
-//
-//                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, textList);
-//                    lv.setAdapter(arrayAdapter);
-//                    */
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                // Getting Post failed, log a message
-//                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-//                // ...
-//            }
-//        };
-//        userRef.addValueEventListener(userListener);
     }
 
     private void setStatus() {
