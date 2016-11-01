@@ -13,6 +13,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -65,7 +66,8 @@ public class GroupStatusActivity extends AppCompatActivity {
         ValueEventListener guestsListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<String> guests = (List<String>)dataSnapshot.getValue();
+                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
+                List<String> guests = dataSnapshot.getValue(t);
                 populateParty(guests);
             }
             @Override
@@ -88,7 +90,6 @@ public class GroupStatusActivity extends AppCompatActivity {
         String orderTimeStr = String.format(Locale.ENGLISH, "%d/%d", group.partySize.intValue(),
                 group.partyCap.intValue());
         partyCountOutput.setText(orderTimeStr);
-        populateParty(group.guests);
     }
 
     // puts a list of guests (ids) into the guests list view
