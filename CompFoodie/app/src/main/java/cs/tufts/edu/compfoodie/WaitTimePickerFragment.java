@@ -1,16 +1,12 @@
 package cs.tufts.edu.compfoodie;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.widget.TextView;
-import android.widget.TimePicker;
 
 import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * Created by charlw on 10/4/16.

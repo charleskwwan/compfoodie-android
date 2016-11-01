@@ -1,18 +1,8 @@
 package cs.tufts.edu.compfoodie;
 
-import android.location.Location;
-import android.os.CountDownTimer;
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 
 /**

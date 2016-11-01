@@ -1,14 +1,10 @@
  package cs.tufts.edu.compfoodie;
 
-import android.graphics.Bitmap;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by charlw on 9/27/16.

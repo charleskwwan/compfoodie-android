@@ -1,6 +1,5 @@
 package cs.tufts.edu.compfoodie;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.design.widget.NavigationView;
@@ -13,7 +12,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,23 +22,16 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.string.no;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
-import static com.facebook.internal.SmartLoginOption.None;
-import static cs.tufts.edu.compfoodie.R.id.browse_other_groups;
 
 public class BrowseActivity extends AppCompatActivity {
     private DatabaseReference dbRef;
