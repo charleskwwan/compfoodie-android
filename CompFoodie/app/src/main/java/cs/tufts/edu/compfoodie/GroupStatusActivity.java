@@ -33,23 +33,28 @@ public class GroupStatusActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_status);
+
         // toolbar
         Toolbar toolbar = (Toolbar)findViewById(R.id.group_status_toolbar);
         toolbar.setTitle(getString(R.string.group_status_title));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // allows return to browse page
+
         // get intent info
         user = (User)getIntent().getSerializableExtra(getString(R.string.currentUserKey));
         group = (Group)getIntent().getSerializableExtra(getString(R.string.currentGroupKey));
         groupId = (String)getIntent().getSerializableExtra(getString(R.string.currentGroupIdKey));
+
         // get status page text fields
         locationOutput = (TextView)findViewById(R.id.location_output);
         orderTimeOutput = (TextView)findViewById(R.id.order_time_output);
         messageOutput = (TextView)findViewById(R.id.message_output);
         partyCountOutput = (TextView)findViewById(R.id.party_count_output);
         partyList = (ListView)findViewById(R.id.party_list);
+
         // set status first time
         setStatus();
+
         // create listener for party
         guestsRef = FirebaseDatabase.getInstance().getReference().child("groups").child(groupId)
             .child("guests");

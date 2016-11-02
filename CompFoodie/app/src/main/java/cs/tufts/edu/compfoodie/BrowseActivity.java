@@ -41,7 +41,6 @@ public class BrowseActivity extends AppCompatActivity {
     private User user;
     private String userID;
     private Bitmap userPic;
-    private List<String> otherGroups = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +66,7 @@ public class BrowseActivity extends AppCompatActivity {
         ValueEventListener groupListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot groupsSnap) {
+                List<String> otherGroups = new ArrayList<>();
                 for (DataSnapshot groupSnap : groupsSnap.getChildren()) {
                     otherGroups.add(groupSnap.getKey());
                 }
@@ -81,7 +81,6 @@ public class BrowseActivity extends AppCompatActivity {
     }
 
     public void populateGroupsLV(List<String> groups, int viewID) {
-        Log.v("groupSize", String.valueOf(groups.size()));
         GroupsAdapter groupsAdapter = new GroupsAdapter(this, groups.toArray(new String[groups.size()]));
         ListView groupsLV = (ListView)findViewById(viewID);
         groupsLV.setAdapter(groupsAdapter);

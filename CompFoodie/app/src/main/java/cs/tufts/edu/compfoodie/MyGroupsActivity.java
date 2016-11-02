@@ -20,7 +20,6 @@ public class MyGroupsActivity extends AppCompatActivity {
     private DatabaseReference dbRef;
     private Toolbar toolbar;
     private String userID;
-    private List<String> userGroups = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +42,7 @@ public class MyGroupsActivity extends AppCompatActivity {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot userSnap) {
+                List<String> userGroups = new ArrayList<>();
                 if (userSnap.getValue() != null) {
                     userGroups = (List<String>) userSnap.getValue();
                 }
@@ -57,7 +57,6 @@ public class MyGroupsActivity extends AppCompatActivity {
     }
 
     public void populateGroupsLV(List<String> groups, int viewID) {
-        Log.v("groupSize", String.valueOf(groups.size()));
         GroupsAdapter groupsAdapter = new GroupsAdapter(this, groups.toArray(new String[groups.size()]));
         ListView groupsLV = (ListView)findViewById(viewID);
         groupsLV.setAdapter(groupsAdapter);

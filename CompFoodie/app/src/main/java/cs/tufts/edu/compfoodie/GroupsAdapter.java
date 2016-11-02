@@ -66,7 +66,7 @@ public class GroupsAdapter extends ArrayAdapter<String> {
 
         // get group from firebase
         final DatabaseReference groupRef = groupsRef.child(groupID);
-        groupRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        groupRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Group group = dataSnapshot.getValue(Group.class);
@@ -86,8 +86,10 @@ public class GroupsAdapter extends ArrayAdapter<String> {
                 orderTimeOutput.setText(hstr + ":" + mstr + " " + tformat);
 
                 // set pressed button if the user is in the group
-                if (group.guests.contains(userID)) {
+                if (group.guests.contains(userID) == true) {
                     groupJoinBtn.setPressed(true);
+                } else {
+                    groupJoinBtn.setPressed(false);
                 }
             }
             @Override
@@ -118,9 +120,11 @@ public class GroupsAdapter extends ArrayAdapter<String> {
                                 if (userGroups.contains(groupID)) {
                                     userGroups.remove(groupID);
                                     groupGuests.remove(userID);
+                                    Log.v("remove ", userID + " from " + groupID);
                                 } else {
                                     userGroups.add(groupID);
                                     groupGuests.add(userID);
+                                    Log.v("adding ", groupID + " to " + userID);
                                 }
                                 userRef.setValue(userGroups);
                                 groupGuestRef.setValue(groupGuests);
