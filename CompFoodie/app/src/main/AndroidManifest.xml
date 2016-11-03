@@ -69,6 +69,9 @@
                 android:value=".BrowseActivity" />
         </activity>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="77b1b210d1006a7c717ddf26eaa12b21bd6919d1" />
     </application>
 
 </manifest>

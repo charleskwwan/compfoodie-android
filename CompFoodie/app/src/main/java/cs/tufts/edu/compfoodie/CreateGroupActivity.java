@@ -2,10 +2,13 @@ package cs.tufts.edu.compfoodie;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,13 +49,16 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
         toolbar.setTitle(getString(R.string.create_group_title));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // get user from intent
         user = (User)getIntent().getSerializableExtra(getString(R.string.currentUserKey));
+
         // get text fields
         locationText = (EditText)findViewById(R.id.location_input);
         partyCapText = (EditText)findViewById(R.id.party_size_input);
         orderTimeText = (TextView)findViewById(R.id.order_time_output);
         messageText = (EditText)findViewById(R.id.message_input);
+
         // set wait time picker button listener
         ImageButton wtbutton = (ImageButton)findViewById(R.id.wait_time_pick_button);
         wtbutton.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +69,7 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
                 wtpfrag.show(getFragmentManager(), "order_time_picker");
             }
         });
+
         // Create Button clicked
         Button crtbutton = (Button) findViewById(R.id.create_button);
         crtbutton.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +86,24 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
                 goToStatus();
             }
         });
+    }
+
+    // add user back when going back to parent
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                upIntent.putExtra(getString(R.string.currentUserKey), user); // add user
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) { // not part of app tasks
+                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent)
+                            .startActivities();
+                } else {
+                    NavUtils.navigateUpTo(this, upIntent); // part of app, just go
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     // sets the order time variables and the order time output
