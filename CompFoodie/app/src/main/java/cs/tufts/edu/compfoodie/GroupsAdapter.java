@@ -71,7 +71,7 @@ public class GroupsAdapter extends ArrayAdapter<String> {
 
         // get group from firebase
         final DatabaseReference groupRef = groupsRef.child(groupID);
-        groupRef.addValueEventListener(new ValueEventListener() {
+        groupRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Group group = dataSnapshot.getValue(Group.class);
@@ -90,6 +90,8 @@ public class GroupsAdapter extends ArrayAdapter<String> {
                 String mstr = String.format(Locale.ENGLISH, "%02d", group.minute.intValue());
                 orderTimeOutput.setText(hstr + ":" + mstr + " " + tformat);
 
+                Log.v("GROUP ID", groupID);
+                Log.v("CREATOR ", group.creator);
                 DatabaseReference creatorRef = dtb.child("users").child(group.creator);
                 creatorRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -147,8 +149,9 @@ public class GroupsAdapter extends ArrayAdapter<String> {
                         clickedGroupRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot clickedGroupSnap) {
+                                Log.v("CLICKED ", "CLICKED");
                                 Group clickedGroup = clickedGroupSnap.getValue(Group.class);
-                                
+
                                 if (clickedGroup.guests == null) {
                                     clickedGroup.guests = new ArrayList<>();
                                 }

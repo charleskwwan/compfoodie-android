@@ -2,10 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/drawer_my_groups"
-            android:title="@string/drawer_my_groups_title"
-            android:icon="@drawable/ic_local_dining_black_24dp"/>
-        <item
             android:id="@+id/drawer_logout"
             android:title="@string/drawer_logout_title"
             android:icon="@drawable/ic_exit_to_app_black_24dp"/>

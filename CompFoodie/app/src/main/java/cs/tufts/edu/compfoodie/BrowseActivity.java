@@ -70,6 +70,7 @@ public class BrowseActivity extends AppCompatActivity {
                 for (DataSnapshot groupSnap : groupsSnap.getChildren()) {
                     otherGroups.add(groupSnap.getKey());
                 }
+                Log.v("OTHER GROUPS", String.valueOf(otherGroups.size()));
                 populateGroupsLV(otherGroups, R.id.browse_other_groups);
             }
             @Override
@@ -104,6 +105,10 @@ public class BrowseActivity extends AppCompatActivity {
                 createPage.putExtra(getString(R.string.currentUserKey), user);
                 startActivity(createPage);
                 return true;
+            case R.id.my_groups_item:
+                Intent myGroupsPage = new Intent(getApplicationContext(), MyGroupsActivity.class);
+                startActivity(myGroupsPage);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -117,10 +122,6 @@ public class BrowseActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 switch(id) {
-                    case R.id.drawer_my_groups:
-                        Intent myGroupsPage = new Intent(getApplicationContext(), MyGroupsActivity.class);
-                        startActivity(myGroupsPage);
-                        break;
                     case R.id.drawer_logout:
                         logout();
                         break;

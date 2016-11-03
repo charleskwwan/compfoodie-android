@@ -17,6 +17,7 @@
     <string name="create_button_text">Create</string>
     <string name="alert_text">You need to fill in all </string>
     <!-- Status Activity -->
+    <string name="my_groups_item_title">My Groups</string>
     <string name="group_status_title">Group Status</string>
     <string name="party_title">Members</string>
     <!-- Login -->
@@ -34,7 +35,6 @@
     <string name="user_display_item_title">User</string>
     <string name="add_group_item_title">Add Group</string>
     <!-- Drawer -->
-    <string name="drawer_my_groups_title">My Groups</string>
     <string name="drawer_logout_title">Logout</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>

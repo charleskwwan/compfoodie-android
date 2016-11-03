@@ -5,13 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".BrowseActivity">
     <item
-        android:id="@+id/user_display_item"
-        android:icon="@drawable/ic_person_black_24dp"
-        android:title="@string/user_display_item_title"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/add_group_item"
         android:icon="@drawable/ic_add_black_24dp"
         android:title="@string/add_group_item_title"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/my_groups_item"
+        android:icon="@drawable/ic_local_dining_black_24dp"
+        android:title="@string/my_groups_item_title"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/user_display_item"
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="@string/user_display_item_title"
         app:showAsAction="ifRoom" />
 </menu>
