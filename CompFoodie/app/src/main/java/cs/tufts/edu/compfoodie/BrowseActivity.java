@@ -75,7 +75,12 @@ public class BrowseActivity extends AppCompatActivity {
                     otherGroups.add(groupSnap.getKey());
                 }
                 Log.v("OTHER GROUPS", String.valueOf(otherGroups.size()));
-                populateGroupsLV(otherGroups, R.id.browse_other_groups);
+                if (otherGroups.size() == 0) {
+                    TextView noGroupsAlert = (TextView)findViewById(R.id.no_groups_alert);
+                    noGroupsAlert.setText(getString(R.string.browse_no_groups));
+                } else {
+                    populateGroupsLV(otherGroups, R.id.browse_other_groups);
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -102,7 +107,7 @@ public class BrowseActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.user_display_item:
-                drawerLayout.openDrawer(Gravity.RIGHT);
+                drawerLayout.openDrawer(Gravity.LEFT);
                 return true;
             case R.id.add_group_item:
                 Intent createPage = new Intent(getApplicationContext(), CreateGroupActivity.class);
