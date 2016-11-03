@@ -8,35 +8,10 @@
     android:fontFamily="sans-serif">
 
     <LinearLayout
-        android:id="@+id/creator_info"
-        android:orientation="horizontal"
-        android:paddingRight="50dp"
-        android:paddingEnd="50dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:contentDescription="@string/creator_pic_description"
-            android:id="@+id/creator_pic"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:scaleType="fitCenter" />
-        <TextView
-            android:id="@+id/creator_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingStart="10dp"
-            android:fontFamily="sans-serif-medium"
-            android:textSize="15sp"
-            android:layout_gravity="center_vertical" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/group_button"
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_below="@+id/creator_info"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
         <Button
@@ -52,27 +27,56 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/creator_info"
+        android:orientation="horizontal"
+        android:layout_toLeftOf="@+id/group_button"
+        android:layout_toStartOf="@+id/group_button"
+        android:layout_gravity="center_vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:contentDescription="@string/creator_pic_description"
+            android:id="@+id/creator_pic"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitCenter" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:layout_gravity="center_vertical">
+            <TextView
+                android:id="@+id/creator_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/group_order_time_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/order_info"
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingEnd="10dp"
         android:layout_below="@+id/creator_info"
         android:layout_toLeftOf="@+id/group_button"
         android:layout_toStartOf="@+id/group_button">
         <TextView
             android:id="@+id/group_message"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"/>
-        <TextView
-            android:id="@+id/group_order_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp" />
-        <TextView
-            android:id="@+id/group_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp" />
     </LinearLayout>
 </RelativeLayout>

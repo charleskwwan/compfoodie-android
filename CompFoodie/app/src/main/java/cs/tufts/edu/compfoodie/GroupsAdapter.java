@@ -60,8 +60,7 @@ public class GroupsAdapter extends ArrayAdapter<String> {
 
         // get all textviews
         final TextView msgOutput = (TextView)convertView.findViewById(R.id.group_message);
-        final TextView orderTimeOutput = (TextView)convertView.findViewById(R.id.group_order_time);
-        final TextView locationOutput = (TextView)convertView.findViewById(R.id.group_location);
+        final TextView orderTimeLocationOutput = (TextView)convertView.findViewById(R.id.group_order_time_location);
         final TextView partyCntOutput = (TextView)convertView.findViewById(R.id.group_party_cnt);
         final ImageView creatorPicOutput = (ImageView)convertView.findViewById(R.id.creator_pic);
         final TextView creatorNameOutput = (TextView)convertView.findViewById(R.id.creator_name);
@@ -76,19 +75,19 @@ public class GroupsAdapter extends ArrayAdapter<String> {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Group group = dataSnapshot.getValue(Group.class);
                 msgOutput.setText(group.message);
-                locationOutput.setText(group.location);
 
                 // assign party cnt
                 String partyCnt = String.format(Locale.ENGLISH, "%d/%d",
                         group.partySize.intValue(), group.partyCap.intValue());
                 partyCntOutput.setText(partyCnt);
 
-                // assign order time
+                // assign order time and location
+                String location = group.location;
                 int orderHour = group.hour.intValue();
                 String tformat = orderHour < 12 ? "AM" : "PM";
                 String hstr = String.format(Locale.ENGLISH, "%02d", orderHour % 12);
                 String mstr = String.format(Locale.ENGLISH, "%02d", group.minute.intValue());
-                orderTimeOutput.setText(hstr + ":" + mstr + " " + tformat);
+                orderTimeLocationOutput.setText(location + " at " + hstr + ":" + mstr + " " + tformat);
 
                 Log.v("GROUP ID", groupID);
                 Log.v("CREATOR ", group.creator);
