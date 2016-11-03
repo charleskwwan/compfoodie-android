@@ -39,4 +39,6 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
     <string name="title_activity_my_groups">MyGroupsActivity</string>
+    <!-- Group Adapter -->
+    <string name="creator_pic_description">Creator Profile Picture</string>
 </resources>

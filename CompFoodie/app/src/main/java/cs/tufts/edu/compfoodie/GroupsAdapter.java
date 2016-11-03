@@ -1,14 +1,17 @@
 package cs.tufts.edu.compfoodie;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.vision.text.Text;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,7 +45,7 @@ public class GroupsAdapter extends ArrayAdapter<String> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
         // group id at position
         final String groupID = getItem(position);
 
@@ -60,6 +63,8 @@ public class GroupsAdapter extends ArrayAdapter<String> {
         final TextView orderTimeOutput = (TextView)convertView.findViewById(R.id.group_order_time);
         final TextView locationOutput = (TextView)convertView.findViewById(R.id.group_location);
         final TextView partyCntOutput = (TextView)convertView.findViewById(R.id.group_party_cnt);
+        final ImageView creatorPicOutput = (ImageView)convertView.findViewById(R.id.creator_pic);
+        final TextView creatorNameOutput = (TextView)convertView.findViewById(R.id.creator_name);
 
         // group join button
         final Button groupJoinBtn = (Button)convertView.findViewById(R.id.group_join_btn);
@@ -85,11 +90,38 @@ public class GroupsAdapter extends ArrayAdapter<String> {
                 String mstr = String.format(Locale.ENGLISH, "%02d", group.minute.intValue());
                 orderTimeOutput.setText(hstr + ":" + mstr + " " + tformat);
 
-                // set pressed button if the user is in the group
-                if (group.guests.contains(userID) == true) {
+                DatabaseReference creatorRef = dtb.child("users").child(group.creator);
+                creatorRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String creatorPicURL = (String)dataSnapshot.child("picUrl").getValue();
+                        VolleyUtils.getImage(creatorPicURL, context,
+                                new VolleyCallback<Bitmap>() {
+                                    @Override
+                                    public void onSuccessResponse(Bitmap response) {
+                                        Bitmap rounded = ImageTransform.getRoundedCornerBitmap(response,
+                                                response.getWidth() / 2);
+                                        creatorPicOutput.setImageBitmap(rounded);
+                                    }
+                                });
+                        creatorNameOutput.setText((String) dataSnapshot.child("name").getValue());
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("*** User Adapter", databaseError.toString());
+                    }
+                });
+
+                // if the user is the creator, disable button press
+                // if the user is in the guests, press the button
+                if (group.creator.equals(userID)) {
                     groupJoinBtn.setPressed(true);
-                } else {
+                    groupJoinBtn.setEnabled(false);
+                    groupJoinBtn.setClickable(false);
+                } else if (group.guests == null || !group.guests.contains(userID)) {
                     groupJoinBtn.setPressed(false);
+                } else {
+                    groupJoinBtn.setPressed(true);
                 }
             }
             @Override
@@ -110,24 +142,27 @@ public class GroupsAdapter extends ArrayAdapter<String> {
                     public void onDataChange(DataSnapshot userSnap) {
                         final List<String> userGroups = userSnap.getValue() == null ? new ArrayList<String>(): (List<String>) userSnap.getValue();
 
-                        final DatabaseReference groupGuestRef = dtb.child("groups").child(groupID).child("guests");
+                        final DatabaseReference clickedGroupRef = dtb.child("groups").child(groupID);
 
-                        groupGuestRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        clickedGroupRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot groupGuestSnap) {
-                                final List<String> groupGuests = groupGuestSnap.getValue() == null ? new ArrayList<String>() : (List<String>) groupGuestSnap.getValue();
-
+                            public void onDataChange(DataSnapshot clickedGroupSnap) {
+                                Group clickedGroup = clickedGroupSnap.getValue(Group.class);
+                                
+                                if (clickedGroup.guests == null) {
+                                    clickedGroup.guests = new ArrayList<>();
+                                }
                                 if (userGroups.contains(groupID)) {
                                     userGroups.remove(groupID);
-                                    groupGuests.remove(userID);
-                                    Log.v("remove ", userID + " from " + groupID);
+                                    clickedGroup.guests.remove(userID);
+                                    clickedGroup.partySize = Double.valueOf(clickedGroup.guests.size());
                                 } else {
                                     userGroups.add(groupID);
-                                    groupGuests.add(userID);
-                                    Log.v("adding ", groupID + " to " + userID);
+                                    clickedGroup.guests.add(userID);
+                                    clickedGroup.partySize = Double.valueOf(clickedGroup.guests.size());
                                 }
                                 userRef.setValue(userGroups);
-                                groupGuestRef.setValue(groupGuests);
+                                clickedGroupRef.setValue(clickedGroup);
                             }
 
                             @Override

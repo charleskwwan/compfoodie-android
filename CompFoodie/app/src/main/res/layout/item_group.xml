@@ -1,36 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:fontFamily="sans-serif">
 
-    <TextView
-        android:id="@+id/group_message"
+    <LinearLayout
+        android:id="@+id/creator_info"
+        android:orientation="horizontal"
+        android:paddingRight="50dp"
+        android:paddingEnd="50dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:contentDescription="@string/creator_pic_description"
+            android:id="@+id/creator_pic"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitCenter" />
+        <TextView
+            android:id="@+id/creator_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="15sp"
+            android:layout_gravity="center_vertical" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/group_button"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/group_order_time"
-        android:layout_below="@+id/group_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/group_location"
-        android:layout_below="@+id/group_order_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/group_party_cnt"
-        android:layout_below="@+id/group_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/group_join_btn"
+        android:layout_below="@+id/creator_info"
         android:layout_alignParentRight="true"
-        android:layout_width="50dp"
-        android:layout_height="60dp"
-        android:background="@drawable/button_pressed" />
+        android:layout_alignParentEnd="true">
+        <Button
+            android:id="@+id/group_join_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/button_pressed" />
+        <TextView
+            android:id="@+id/group_party_cnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/order_info"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/creator_info"
+        android:layout_toLeftOf="@+id/group_button"
+        android:layout_toStartOf="@+id/group_button">
+        <TextView
+            android:id="@+id/group_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/group_order_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp" />
+        <TextView
+            android:id="@+id/group_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp" />
+    </LinearLayout>
 </RelativeLayout>
