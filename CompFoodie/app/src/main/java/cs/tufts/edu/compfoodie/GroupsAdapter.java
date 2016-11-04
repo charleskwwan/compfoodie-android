@@ -38,10 +38,12 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
 
     @Override
     protected void populateView(View v, Group model, final int position) {
+        // Filter out groups that the user is not in.
         if (filterMyGroups && !model.guests.contains(userID)) {
             v.setVisibility(View.GONE);
             return;
         }
+        v.setVisibility(View.VISIBLE);
 
         // get all views
         final TextView msgOutput = (TextView)v.findViewById(R.id.group_message);
@@ -108,10 +110,6 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
                 final String groupID = groupRef.getKey();
                 final DatabaseReference userRef = dbRef.child("users").child(userID);
                 final Group group = getItem(position);
-
-                for (String guest: group.guests) {
-                    Log.v("guest", guest);
-                }
 
                 userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
