@@ -1,5 +1,6 @@
 package cs.tufts.edu.compfoodie;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class GroupStatusActivity extends AppCompatActivity {
+    private Context context;
     private User user;
     private Group group;
     private String groupId;
@@ -36,6 +38,7 @@ public class GroupStatusActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.context = context;
         setContentView(R.layout.activity_group_status);
 
         // toolbar

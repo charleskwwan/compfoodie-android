@@ -26,6 +26,8 @@ public class MyGroupsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private User user;
     private String userID;
+    private DatabaseReference groupsRef;
+    private ListView groupsLV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class MyGroupsActivity extends AppCompatActivity {
 
         // work with firebase
         dbRef = FirebaseDatabase.getInstance().getReference();
-        populateUserGroups();
+        populateMyGroups();
     }
 
     // add user back when going back to parent
@@ -65,33 +67,10 @@ public class MyGroupsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void populateUserGroups() {
-        DatabaseReference userRef = dbRef.child("users").child(userID).child("groups");
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot userSnap) {
-                List<String> userGroups = new ArrayList<>();
-                if (userSnap.getValue() != null) {
-                    userGroups = (List<String>) userSnap.getValue();
-                }
-                if (userGroups.size() == 0) {
-                    TextView noGroupsAlert = (TextView)findViewById(R.id.no_groups_alert);
-                    noGroupsAlert.setText(getString(R.string.my_groups_no_groups));
-                } else {
-                    populateGroupsLV(userGroups, R.id.my_groups_user_groups);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        userRef.addValueEventListener(userListener);
-    }
-
-    public void populateGroupsLV(List<String> groups, int viewID) {
-        GroupsAdapter groupsAdapter = new GroupsAdapter(this, groups.toArray(new String[groups.size()]));
-        ListView groupsLV = (ListView)findViewById(viewID);
-        groupsLV.setAdapter(groupsAdapter);
+    public void populateMyGroups() {
+        groupsRef = dbRef.child("groups");
+        groupsLV = (ListView)findViewById(R.id.my_groups_user_groups);
+        GroupsAdapter adapter = new GroupsAdapter(MyGroupsActivity.this, groupsRef);
+        groupsLV.setAdapter(adapter);
     }
 }

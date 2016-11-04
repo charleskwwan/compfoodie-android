@@ -1,5 +1,6 @@
 package cs.tufts.edu.compfoodie;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.ContactsContract;
@@ -13,6 +14,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.vision.text.Text;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,8 +38,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class BrowseActivity extends AppCompatActivity {
+    private Context context;
     private DatabaseReference dbRef;
     private NavigationView navDrawer;
     private DrawerLayout drawerLayout;
@@ -44,10 +49,14 @@ public class BrowseActivity extends AppCompatActivity {
     private User user;
     private String userID;
     private Bitmap userPic;
+    private ListView groupsLV;
+    private DatabaseReference groupsRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.context = context;
+
         setContentView(R.layout.activity_browse);
         // ToolBar
         toolbar = (Toolbar)findViewById(R.id.browse_toolbar);
@@ -56,6 +65,7 @@ public class BrowseActivity extends AppCompatActivity {
         // set up drawer
         dbRef = FirebaseDatabase.getInstance().getReference();
         initNavDrawer();
+        Log.v("Browse onCreate", "1");
         // get user
         user = (User)getIntent().getSerializableExtra(getString(R.string.currentUserKey));
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -65,35 +75,10 @@ public class BrowseActivity extends AppCompatActivity {
     }
 
     public void populateGroups() {
-        DatabaseReference groupRef = dbRef.child("groups");
-
-        ValueEventListener groupListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot groupsSnap) {
-                List<String> otherGroups = new ArrayList<>();
-                for (DataSnapshot groupSnap : groupsSnap.getChildren()) {
-                    otherGroups.add(groupSnap.getKey());
-                }
-                Log.v("OTHER GROUPS", String.valueOf(otherGroups.size()));
-                if (otherGroups.size() == 0) {
-                    TextView noGroupsAlert = (TextView)findViewById(R.id.no_groups_alert);
-                    noGroupsAlert.setText(getString(R.string.browse_no_groups));
-                } else {
-                    populateGroupsLV(otherGroups, R.id.browse_other_groups);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        groupRef.addValueEventListener(groupListener);
-    }
-
-    public void populateGroupsLV(List<String> groups, int viewID) {
-        GroupsAdapter groupsAdapter = new GroupsAdapter(this, groups.toArray(new String[groups.size()]));
-        ListView groupsLV = (ListView)findViewById(viewID);
-        groupsLV.setAdapter(groupsAdapter);
+        groupsRef = dbRef.child("groups");
+        groupsLV = (ListView)findViewById(R.id.browse_other_groups);
+        GroupsAdapter adapter = new GroupsAdapter(BrowseActivity.this, groupsRef);
+        groupsLV.setAdapter(adapter);
     }
 
     // inflates menu if action bar present (toolbar)
