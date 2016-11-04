@@ -76,7 +76,7 @@ public class MyGroupsActivity extends AppCompatActivity {
                 }
                 if (userGroups.size() == 0) {
                     TextView noGroupsAlert = (TextView)findViewById(R.id.no_groups_alert);
-                    noGroupsAlert.setText(getString(R.string.browse_no_groups));
+                    noGroupsAlert.setText(getString(R.string.my_groups_no_groups));
                 } else {
                     populateGroupsLV(userGroups, R.id.my_groups_user_groups);
                 }
