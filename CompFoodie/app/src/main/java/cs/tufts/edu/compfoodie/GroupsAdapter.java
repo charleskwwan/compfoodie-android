@@ -155,16 +155,4 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
             }
         });
     }
-
-    /*
-    protected List<Group> modifyArrayAdapter(List<Group> models){
-        List<Group> filtered = new ArrayList<>();
-        for (Group model : models) {
-            if (model.guests.contains(userID)) {
-                continue;
-            }
-            filtered.add(model);
-        }
-        return filtered;
-    }*/
 };
