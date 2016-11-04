@@ -70,7 +70,7 @@ public class MyGroupsActivity extends AppCompatActivity {
     public void populateMyGroups() {
         groupsRef = dbRef.child("groups");
         groupsLV = (ListView)findViewById(R.id.my_groups_user_groups);
-        GroupsAdapter adapter = new GroupsAdapter(MyGroupsActivity.this, groupsRef);
+        GroupsAdapter adapter = new GroupsAdapter(MyGroupsActivity.this, groupsRef, true);
         groupsLV.setAdapter(adapter);
     }
 }

@@ -22,20 +22,27 @@ import java.util.Locale;
 
 public class GroupsAdapter extends FirebaseListAdapter<Group> {
     private Activity activity;
-    private String groupIds[] = null;
     private DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
     private String userID;
     private Context context;
+    private Boolean filterMyGroups;
 
     // constructor
-    public GroupsAdapter(Activity activity, DatabaseReference groupRef) {
+    public GroupsAdapter(Activity activity, DatabaseReference groupRef, Boolean filterMyGroups) {
         super(activity, Group.class, R.layout.item_group, groupRef);
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.context = activity;
+        this.filterMyGroups = filterMyGroups;
     }
+
 
     @Override
     protected void populateView(View v, Group model, final int position) {
+        if (filterMyGroups && !model.guests.contains(userID)) {
+            v.setVisibility(View.GONE);
+            return;
+        }
+
         // get all views
         final TextView msgOutput = (TextView)v.findViewById(R.id.group_message);
         final TextView orderTimeLocationOutput = (TextView)v.findViewById(R.id.group_order_time_location);
@@ -149,6 +156,17 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
                 });
             }
         });
-        //v.setVisibility(View.GONE);
     }
+
+    /*
+    protected List<Group> modifyArrayAdapter(List<Group> models){
+        List<Group> filtered = new ArrayList<>();
+        for (Group model : models) {
+            if (model.guests.contains(userID)) {
+                continue;
+            }
+            filtered.add(model);
+        }
+        return filtered;
+    }*/
 };

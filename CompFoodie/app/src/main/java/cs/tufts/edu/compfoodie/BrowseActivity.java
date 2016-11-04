@@ -77,7 +77,7 @@ public class BrowseActivity extends AppCompatActivity {
     public void populateGroups() {
         groupsRef = dbRef.child("groups");
         groupsLV = (ListView)findViewById(R.id.browse_other_groups);
-        GroupsAdapter adapter = new GroupsAdapter(BrowseActivity.this, groupsRef);
+        GroupsAdapter adapter = new GroupsAdapter(BrowseActivity.this, groupsRef, false);
         groupsLV.setAdapter(adapter);
     }
 
