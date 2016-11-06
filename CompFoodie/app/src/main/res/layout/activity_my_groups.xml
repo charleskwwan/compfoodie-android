@@ -36,7 +36,8 @@
         <ListView
             android:id="@+id/my_groups_user_groups"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:divider="@color/white">
         </ListView>
 
     </RelativeLayout>

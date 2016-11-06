@@ -22,13 +22,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 public class GroupsAdapter extends FirebaseListAdapter<Group> {
     private DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
     private String userID;
     private Activity activity;
     private Boolean filterMyGroups;
+    private Map<String, String> names = new HashMap<>(); // creator key -> name
+    private Map<String, Bitmap> profilePics = new HashMap<>(); // creator key -> pic
 
     // constructor
     public GroupsAdapter(Activity activity, DatabaseReference groupRef, Boolean filterMyGroups) {
@@ -40,21 +45,22 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        if (view == null) {
+        Group model = getItem(i);
+        if (filterMyGroups && !model.guests.contains(userID)) {
+            view = activity.getLayoutInflater().inflate(R.layout.item_empty_group, viewGroup, false);
+        } else {
             view = activity.getLayoutInflater().inflate(R.layout.item_group, viewGroup, false);
         }
-        Group model = getItem(i);
         view.setTag(i);
         populateView(view, model, i);
         return view;
     }
 
     @Override
-    protected void populateView(final View v, Group model, final int position) {
+    protected void populateView(final View v, final Group model, final int position) {
         // Filter out groups that the user is not in.
         if (filterMyGroups && !model.guests.contains(userID)) {
-            RelativeLayout groupItem = (RelativeLayout)v.findViewById(R.id.item_group);
-            groupItem.setVisibility(View.GONE);
+            v.setVisibility(View.GONE);
             return;
         }
         v.setVisibility(View.VISIBLE);
@@ -64,6 +70,8 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
         final TextView orderTimeLocationOutput = (TextView)v.findViewById(R.id.group_order_time_location);
         final TextView partyCntOutput = (TextView)v.findViewById(R.id.group_party_cnt);
         final Button groupJoinBtn = (Button)v.findViewById(R.id.group_join_btn);
+        final TextView creatorNameOutput = (TextView) v.findViewById(R.id.creator_name);
+        final ImageView creatorPicOutput = (ImageView) v.findViewById(R.id.creator_pic);
 
         // set message
         msgOutput.setText(model.message);
@@ -81,38 +89,40 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
         String mstr = String.format(Locale.ENGLISH, "%02d", model.minute.intValue());
         orderTimeLocationOutput.setText(location + " at " + hstr + ":" + mstr + " " + tformat);
 
-        // set null state for image first
-//        creatorPicOutput.setImageBitmap(null);
         // set creator image
-        DatabaseReference creatorRef = dbRef.child("users").child(model.creator);
-//        Toast.makeText(context, model.creator + " " + Integer.toString(position), Toast.LENGTH_SHORT).show();
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String creatorPicURL = (String)dataSnapshot.child("picUrl").getValue();
-                String name = (String) dataSnapshot.child("name").getValue();
-                if ((int)v.getTag() == position) {
-                    TextView creatorNameOutput = (TextView) v.findViewById(R.id.creator_name);
-                    VolleyUtils.getImage(creatorPicURL, activity,
-                            new VolleyCallback<Bitmap>() {
-                                @Override
-                                public void onSuccessResponse(Bitmap response) {
-                                    ImageView creatorPicOutput = (ImageView) v.findViewById(
-                                            R.id.creator_pic);
-                                    Bitmap rounded = ImageTransform.getRoundedCornerBitmap(response,
-                                            response.getWidth() / 2);
-                                    creatorPicOutput.setImageBitmap(rounded);
-                                }
-                            });
-                    creatorNameOutput.setText(name);
+        // if already exist in cache, use, otherwise map async request
+        if (names.containsKey(model.creator) && profilePics.containsKey(model.creator)) {
+            creatorNameOutput.setText(names.get(model.creator));
+            creatorPicOutput.setImageBitmap(profilePics.get(model.creator));
+        } else {
+            DatabaseReference creatorRef = dbRef.child("users").child(model.creator);
+            creatorRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String creatorPicURL = (String) dataSnapshot.child("picUrl").getValue();
+                    if ((int) v.getTag() == position) {
+                        VolleyUtils.getImage(creatorPicURL, activity,
+                                new VolleyCallback<Bitmap>() {
+                                    @Override
+                                    public void onSuccessResponse(Bitmap response) {
+                                        Bitmap rounded = ImageTransform.getRoundedCornerBitmap(response,
+                                                response.getWidth() / 2);
+                                        profilePics.put(model.creator, rounded);
+                                        creatorPicOutput.setImageBitmap(rounded);
+                                    }
+                                });
+                        String name = (String) dataSnapshot.child("name").getValue();
+                        names.put(model.creator, name);
+                        creatorNameOutput.setText(name);
+                    }
                 }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("*** User Adapter", databaseError.toString());
-            }
-        };
-        creatorRef.addListenerForSingleValueEvent(userListener);
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.e("*** User Adapter", databaseError.toString());
+                }
+            });
+        }
 
         groupJoinBtn.setEnabled(true);
         groupJoinBtn.setClickable(true);
