@@ -1,11 +1,10 @@
 package cs.tufts.edu.compfoodie;
 
-import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,55 +22,56 @@ import java.util.List;
 import java.util.Locale;
 
 public class GroupStatusActivity extends AppCompatActivity {
-    private Context context;
+    private String groupId;
+    private UsersAdapter partyListAdapter;
+    private DatabaseReference guestsRef;
     private User user;
     private Group group;
-    private String groupId;
     private TextView locationOutput;
     private TextView orderTimeOutput;
     private TextView messageOutput;
     private TextView partyCountOutput;
     private ListView partyList;
-    private UsersAdapter partyListAdapter;
-    private DatabaseReference guestsRef;
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.context = context;
         setContentView(R.layout.activity_group_status);
 
         // toolbar
-        Toolbar toolbar = (Toolbar)findViewById(R.id.group_status_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.group_status_toolbar);
         toolbar.setTitle(getString(R.string.group_status_title));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // allows return to browse page
 
         // get intent info
-        user = (User)getIntent().getSerializableExtra(getString(R.string.currentUserKey));
-        group = (Group)getIntent().getSerializableExtra(getString(R.string.currentGroupKey));
-        groupId = (String)getIntent().getSerializableExtra(getString(R.string.currentGroupIdKey));
+        user = (User) getIntent().getSerializableExtra(getString(R.string.currentUserKey));
+        group = (Group) getIntent().getSerializableExtra(getString(R.string.currentGroupKey));
+        groupId = (String) getIntent().getSerializableExtra(getString(R.string.currentGroupIdKey));
 
         // get status page text fields
-        locationOutput = (TextView)findViewById(R.id.location_output);
-        orderTimeOutput = (TextView)findViewById(R.id.order_time_output);
-        messageOutput = (TextView)findViewById(R.id.message_output);
-        partyCountOutput = (TextView)findViewById(R.id.party_count_output);
-        partyList = (ListView)findViewById(R.id.party_list);
+        locationOutput = (TextView) findViewById(R.id.location_output);
+        orderTimeOutput = (TextView) findViewById(R.id.order_time_output);
+        messageOutput = (TextView) findViewById(R.id.message_output);
+        partyCountOutput = (TextView) findViewById(R.id.party_count_output);
+        partyList = (ListView) findViewById(R.id.party_list);
 
         // set status first time
         setStatus();
 
         // create listener for party
         guestsRef = FirebaseDatabase.getInstance().getReference().child("groups").child(groupId)
-            .child("guests");
+                .child("guests");
         ValueEventListener guestsListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
+                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {
+                };
                 List<String> guests = dataSnapshot.getValue(t);
                 populateParty(guests);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("*** Users Listener", databaseError.toString());

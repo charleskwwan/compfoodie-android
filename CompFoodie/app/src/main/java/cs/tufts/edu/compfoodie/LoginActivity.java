@@ -1,13 +1,6 @@
 package cs.tufts.edu.compfoodie;
 
-import com.facebook.AccessToken;
-import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.widget.LoginButton;
-
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,10 +8,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -47,12 +45,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // initialze fb sdk
+        // initialize fb sdk
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
         // ToolBar
-        Toolbar toolbar = (Toolbar)findViewById(R.id.login_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.login_toolbar);
         toolbar.setTitle(getString(R.string.login_toolbar_title));
         setSupportActionBar(toolbar);
 
@@ -66,10 +64,12 @@ public class LoginActivity extends AppCompatActivity {
                 accessToken = loginResult.getAccessToken();
                 handleFacebookAccessToken(accessToken);
             }
+
             @Override
             public void onCancel() {
                 Log.v("*** Facebook Login", "Login cancelled");
             }
+
             @Override
             public void onError(FacebookException e) {
                 Log.e("*** Facebook Login", e.toString());
@@ -115,21 +115,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // exchange fb token for firebase token
+    @SuppressWarnings("ConstantConditions")
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d("*** Token Handling", "Handling " + token.toString());
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.d("*** Attempted DB SignIn", "Was " + task.isSuccessful());
-                if (!task.isSuccessful()) {
-                    Log.w("Failed DB SignIn", task.getException().toString());
-                    Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                   Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("*** Attempted DB SignIn", "Was " + task.isSuccessful());
+                        if (!task.isSuccessful()) {
+                            Log.w("Failed DB SignIn", task.getException().toString());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     // snapshot MUST be from database users child
@@ -137,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
         user = new User();
         user = snapshot.child(userId).getValue(User.class);
         if (user.groups == null) { // might have no groups on firebase
-            user.groups = new ArrayList<String>();
+            user.groups = new ArrayList<>();
         }
         goToBrowse();
     }
@@ -155,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
                                 user.name = object.getString("name");
                                 user.picUrl = object.getJSONObject("picture").getJSONObject("data")
                                         .getString("url");
-                                user.groups = new ArrayList<String>();
+                                user.groups = new ArrayList<>();
                                 goToBrowse();
                             } catch (Exception e) {
                                 Log.e("*** Graph Request", e.toString());
@@ -173,6 +174,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // checks if the user is in firebase. if yes, get user from there. if not, get from facebook.
+    @SuppressWarnings("ConstantConditions")
     private void getUser() {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference()
                 .child("users");
@@ -186,6 +188,7 @@ public class LoginActivity extends AppCompatActivity {
                     getUserFromFacebook();
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("*** Firebase Request", "Could not reach Firebase");
@@ -195,6 +198,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // goto browse, while passing user browse
     // only USE when have all user data
+    @SuppressWarnings("ConstantConditions")
     private void goToBrowse() {
         // add user to firebase
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();

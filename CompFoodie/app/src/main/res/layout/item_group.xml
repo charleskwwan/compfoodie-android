@@ -3,23 +3,25 @@
     android:id="@+id/item_group"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:fontFamily="sans-serif"
     android:orientation="vertical"
-    android:paddingTop="10dp"
     android:paddingBottom="10dp"
-    android:fontFamily="sans-serif">
+    android:paddingTop="10dp">
 
     <LinearLayout
         android:id="@+id/group_button"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:orientation="vertical">
+
         <Button
             android:id="@+id/group_join_btn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/button_pressed" />
+
         <TextView
             android:id="@+id/group_party_cnt"
             android:layout_width="wrap_content"
@@ -29,56 +31,65 @@
 
     <LinearLayout
         android:id="@+id/creator_info"
-        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_toLeftOf="@+id/group_button"
         android:layout_toStartOf="@+id/group_button"
-        android:layout_gravity="center_vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
+
         <ImageView
-            android:contentDescription="@string/creator_pic_description"
             android:id="@+id/creator_pic"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:contentDescription="@string/creator_pic_description"
             android:scaleType="fitCenter" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:orientation="vertical"
             android:paddingLeft="10dp"
             android:paddingStart="10dp"
-            android:layout_gravity="center_vertical">
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp">
+
             <TextView
                 android:id="@+id/creator_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="15sp"
-                android:text=""/>
+                android:text=""
+                android:textSize="15sp" />
+
             <TextView
                 android:id="@+id/group_order_time_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 
 
     <LinearLayout
         android:id="@+id/order_info"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:paddingTop="10dp"
-        android:paddingRight="10dp"
-        android:paddingEnd="10dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/creator_info"
         android:layout_toLeftOf="@+id/group_button"
-        android:layout_toStartOf="@+id/group_button">
+        android:layout_toStartOf="@+id/group_button"
+        android:orientation="vertical"
+        android:paddingEnd="10dp"
+        android:paddingRight="10dp"
+        android:paddingStart="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp">
+
         <TextView
             android:id="@+id/group_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
     </LinearLayout>
 </RelativeLayout>

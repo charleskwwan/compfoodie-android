@@ -2,10 +2,10 @@ package cs.tufts.edu.compfoodie;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,16 +16,16 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class CreateGroupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener  {
+public class CreateGroupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     private FirebaseDatabase database;
     private DatabaseReference groupRef;
     private DatabaseReference userRef;
@@ -40,27 +40,28 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
     private EditText messageText;
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
 
         // ToolBar
-        Toolbar toolbar = (Toolbar)findViewById(R.id.create_group_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.create_group_toolbar);
         toolbar.setTitle(getString(R.string.create_group_title));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // get user from intent
-        user = (User)getIntent().getSerializableExtra(getString(R.string.currentUserKey));
+        user = (User) getIntent().getSerializableExtra(getString(R.string.currentUserKey));
 
         // get text fields
-        locationText = (EditText)findViewById(R.id.location_input);
-        partyCapText = (EditText)findViewById(R.id.party_size_input);
-        orderTimeText = (TextView)findViewById(R.id.order_time_output);
-        messageText = (EditText)findViewById(R.id.message_input);
+        locationText = (EditText) findViewById(R.id.location_input);
+        partyCapText = (EditText) findViewById(R.id.party_size_input);
+        orderTimeText = (TextView) findViewById(R.id.order_time_output);
+        messageText = (EditText) findViewById(R.id.message_input);
 
         // set wait time picker button listener
-        ImageButton wtbutton = (ImageButton)findViewById(R.id.wait_time_pick_button);
+        ImageButton wtbutton = (ImageButton) findViewById(R.id.wait_time_pick_button);
         wtbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,8 +79,9 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
                 try {
                     verifyInput();
                 } catch (FormException missing) {
-                    TextView alertText = (TextView)findViewById(R.id.alert_text);
-                    alertText.setText("You need to supply the " + missing.getMessage());
+                    TextView alertText = (TextView) findViewById(R.id.alert_text);
+                    String alert = "You need to supply the " + missing.getMessage();
+                    alertText.setText(alert);
                     return;
                 }
                 sendInfoToFirebase();
@@ -109,7 +111,7 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
     // sets the order time variables and the order time output
     @Override
     public void onTimeSet(TimePicker tp, int hour, int minute) {
-        TextView order_time_output = (TextView)findViewById(R.id.order_time_output);
+        TextView order_time_output = (TextView) findViewById(R.id.order_time_output);
         orderHour = hour;
         orderMinute = minute;
         String tformat = hour < 12 ? "AM" : "PM";
@@ -131,16 +133,17 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void sendInfoToFirebase() {
         // get values for group creation
         String location = locationText.getText().toString();
-        double partyCap = (double)Integer.parseInt(partyCapText.getText().toString());
+        double partyCap = (double) Integer.parseInt(partyCapText.getText().toString());
         double partySize = 1.0; // creator is the first member
         String message = messageText.getText().toString();
         // get user for creator
         FirebaseUser creator = FirebaseAuth.getInstance().getCurrentUser();
         String creatorId = creator.getUid();
-        List<String> guests = new ArrayList<String>();
+        List<String> guests = new ArrayList<>();
         guests.add(creatorId);
         // create group
         group = new Group(location, partyCap, partySize, message, creatorId, guests, orderHour,

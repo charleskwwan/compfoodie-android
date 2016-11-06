@@ -1,17 +1,13 @@
 package cs.tufts.edu.compfoodie;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,9 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.Semaphore;
 
-public class GroupsAdapter extends FirebaseListAdapter<Group> {
+class GroupsAdapter extends FirebaseListAdapter<Group> {
     private DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
     private String userID;
     private Activity activity;
@@ -36,6 +31,7 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
     private Map<String, Bitmap> profilePics = new HashMap<>(); // creator key -> pic
 
     // constructor
+    @SuppressWarnings("ConstantConditions")
     public GroupsAdapter(Activity activity, DatabaseReference groupRef, Boolean filterMyGroups) {
         super(activity, Group.class, R.layout.item_group, groupRef);
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -66,10 +62,10 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
         v.setVisibility(View.VISIBLE);
 
         // get all views
-        final TextView msgOutput = (TextView)v.findViewById(R.id.group_message);
-        final TextView orderTimeLocationOutput = (TextView)v.findViewById(R.id.group_order_time_location);
-        final TextView partyCntOutput = (TextView)v.findViewById(R.id.group_party_cnt);
-        final Button groupJoinBtn = (Button)v.findViewById(R.id.group_join_btn);
+        final TextView msgOutput = (TextView) v.findViewById(R.id.group_message);
+        final TextView orderTimeLocationOutput = (TextView) v.findViewById(R.id.group_order_time_location);
+        final TextView partyCntOutput = (TextView) v.findViewById(R.id.group_party_cnt);
+        final Button groupJoinBtn = (Button) v.findViewById(R.id.group_join_btn);
         final TextView creatorNameOutput = (TextView) v.findViewById(R.id.creator_name);
         final ImageView creatorPicOutput = (ImageView) v.findViewById(R.id.creator_pic);
 
@@ -182,6 +178,7 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
                             }
                         });
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
@@ -190,4 +187,4 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
             }
         });
     }
-};
+}

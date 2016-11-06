@@ -3,7 +3,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/drawer_logout"
-            android:title="@string/drawer_logout_title"
-            android:icon="@drawable/ic_exit_to_app_black_24dp"/>
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
+            android:title="@string/drawer_logout_title" />
     </group>
 </menu>

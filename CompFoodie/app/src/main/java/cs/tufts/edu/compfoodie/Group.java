@@ -7,11 +7,11 @@ import java.util.List;
 
 /**
  * Created by charlw on 9/27/16.
- *      represents an order group
- *      made public for interaction with firebase
+ * represents an order group
+ * made public for interaction with firebase
  */
 @IgnoreExtraProperties
-public class Group implements Serializable {
+class Group implements Serializable {
     public String location;
     public Double partyCap;
     public Double partySize;

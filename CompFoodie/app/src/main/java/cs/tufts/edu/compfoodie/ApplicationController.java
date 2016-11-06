@@ -8,10 +8,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.Crashlytics;
+
 import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by ngapham on 10/8/16.
+ *      For volley queueing
  */
 
 public class ApplicationController extends Application {
@@ -20,16 +22,21 @@ public class ApplicationController extends Application {
      * Log or request TAG
      */
     public static final String TAG = "VolleyPatterns";
-
+    /**
+     * A singleton instance of the application class for easy access in other places
+     */
+    private static ApplicationController sInstance;
     /**
      * Global request queue for Volley
      */
     private RequestQueue mRequestQueue;
 
     /**
-     * A singleton instance of the application class for easy access in other places
+     * @return ApplicationController singleton instance
      */
-    private static ApplicationController sInstance;
+    public static synchronized ApplicationController getInstance() {
+        return sInstance;
+    }
 
     @Override
     public void onCreate() {
@@ -38,13 +45,6 @@ public class ApplicationController extends Application {
 
         // initialize the singleton
         sInstance = this;
-    }
-
-    /**
-     * @return ApplicationController singleton instance
-     */
-    public static synchronized ApplicationController getInstance() {
-        return sInstance;
     }
 
     /**
@@ -64,8 +64,8 @@ public class ApplicationController extends Application {
      * Adds the specified request to the global queue, if tag is specified
      * then it is used else Default TAG is used.
      *
-     * @param req
-     * @param tag
+     * @param req unknown
+     * @param tag unknown
      */
     public <T> void addToRequestQueue(Request<T> req, String tag) {
         // set the default tag if tag is empty
@@ -79,8 +79,7 @@ public class ApplicationController extends Application {
     /**
      * Adds the specified request to the global queue using the Default TAG.
      *
-     * @param req
-     * @param tag
+     * @param req unknown
      */
     public <T> void addToRequestQueue(Request<T> req) {
         // set the default tag if tag is empty
@@ -93,7 +92,7 @@ public class ApplicationController extends Application {
      * Cancels all pending requests by the specified TAG, it is important
      * to specify a TAG so that the pending/ongoing requests can be cancelled.
      *
-     * @param tag
+     * @param tag unknown
      */
     public void cancelPendingRequests(Object tag) {
         if (mRequestQueue != null) {
