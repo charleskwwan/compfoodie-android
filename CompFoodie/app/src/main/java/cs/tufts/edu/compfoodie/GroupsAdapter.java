@@ -87,7 +87,7 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
         String tformat = orderHour < 12 ? "AM" : "PM";
         String hstr = String.format(Locale.ENGLISH, "%02d", orderHour % 12);
         String mstr = String.format(Locale.ENGLISH, "%02d", model.minute.intValue());
-        orderTimeLocationOutput.setText(location + " at " + hstr + ":" + mstr + " " + tformat);
+        orderTimeLocationOutput.setText("Ordering at " + hstr + ":" + mstr + " " + tformat + " from " + location);
 
         // set creator image
         // if already exist in cache, use, otherwise map async request
@@ -124,15 +124,19 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
             });
         }
 
-        groupJoinBtn.setEnabled(true);
-        groupJoinBtn.setClickable(true);
-        // if the user is the creator, disable button press
-        // if the user is in the guests, press the button
-        if (model.creator.equals(userID)) {
-            groupJoinBtn.setPressed(true);
+
+        // Disable button press if the user is the creator,
+        // or if the group is full and the user is not in the group
+        if ((model.guests.size() == model.partyCap && !model.guests.contains(userID)) || model.creator.equals(userID)) {
             groupJoinBtn.setEnabled(false);
             groupJoinBtn.setClickable(false);
-        } else if (model.guests == null || !model.guests.contains(userID)) {
+        } else {
+            groupJoinBtn.setEnabled(true);
+            groupJoinBtn.setClickable(true);
+        }
+
+        // if the user is in the guests, press the button
+        if (model.guests == null || !model.guests.contains(userID)) {
             groupJoinBtn.setPressed(false);
         } else {
             groupJoinBtn.setPressed(true);
