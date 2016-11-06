@@ -5,9 +5,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,26 +25,36 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class GroupsAdapter extends FirebaseListAdapter<Group> {
-    private Activity activity;
     private DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
     private String userID;
-    private Context context;
+    private Activity activity;
     private Boolean filterMyGroups;
 
     // constructor
     public GroupsAdapter(Activity activity, DatabaseReference groupRef, Boolean filterMyGroups) {
         super(activity, Group.class, R.layout.item_group, groupRef);
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        this.context = activity;
+        this.activity = activity;
         this.filterMyGroups = filterMyGroups;
     }
 
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        if (view == null) {
+            view = activity.getLayoutInflater().inflate(R.layout.item_group, viewGroup, false);
+        }
+        Group model = getItem(i);
+        view.setTag(i);
+        populateView(view, model, i);
+        return view;
+    }
 
     @Override
-    protected void populateView(View v, Group model, final int position) {
+    protected void populateView(final View v, Group model, final int position) {
         // Filter out groups that the user is not in.
         if (filterMyGroups && !model.guests.contains(userID)) {
-            v.setVisibility(View.GONE);
+            RelativeLayout groupItem = (RelativeLayout)v.findViewById(R.id.item_group);
+            groupItem.setVisibility(View.GONE);
             return;
         }
         v.setVisibility(View.VISIBLE);
@@ -49,8 +63,6 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
         final TextView msgOutput = (TextView)v.findViewById(R.id.group_message);
         final TextView orderTimeLocationOutput = (TextView)v.findViewById(R.id.group_order_time_location);
         final TextView partyCntOutput = (TextView)v.findViewById(R.id.group_party_cnt);
-        final ImageView creatorPicOutput = (ImageView)v.findViewById(R.id.creator_pic);
-        final TextView creatorNameOutput = (TextView)v.findViewById(R.id.creator_name);
         final Button groupJoinBtn = (Button)v.findViewById(R.id.group_join_btn);
 
         // set message
@@ -69,28 +81,41 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
         String mstr = String.format(Locale.ENGLISH, "%02d", model.minute.intValue());
         orderTimeLocationOutput.setText(location + " at " + hstr + ":" + mstr + " " + tformat);
 
+        // set null state for image first
+//        creatorPicOutput.setImageBitmap(null);
+        // set creator image
         DatabaseReference creatorRef = dbRef.child("users").child(model.creator);
-        creatorRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//        Toast.makeText(context, model.creator + " " + Integer.toString(position), Toast.LENGTH_SHORT).show();
+        ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String creatorPicURL = (String)dataSnapshot.child("picUrl").getValue();
-                VolleyUtils.getImage(creatorPicURL, context,
-                        new VolleyCallback<Bitmap>() {
-                            @Override
-                            public void onSuccessResponse(Bitmap response) {
-                                Bitmap rounded = ImageTransform.getRoundedCornerBitmap(response,
-                                        response.getWidth() / 2);
-                                creatorPicOutput.setImageBitmap(rounded);
-                            }
-                        });
-                creatorNameOutput.setText((String) dataSnapshot.child("name").getValue());
+                String name = (String) dataSnapshot.child("name").getValue();
+                if ((int)v.getTag() == position) {
+                    TextView creatorNameOutput = (TextView) v.findViewById(R.id.creator_name);
+                    VolleyUtils.getImage(creatorPicURL, activity,
+                            new VolleyCallback<Bitmap>() {
+                                @Override
+                                public void onSuccessResponse(Bitmap response) {
+                                    ImageView creatorPicOutput = (ImageView) v.findViewById(
+                                            R.id.creator_pic);
+                                    Bitmap rounded = ImageTransform.getRoundedCornerBitmap(response,
+                                            response.getWidth() / 2);
+                                    creatorPicOutput.setImageBitmap(rounded);
+                                }
+                            });
+                    creatorNameOutput.setText(name);
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("*** User Adapter", databaseError.toString());
             }
-        });
+        };
+        creatorRef.addListenerForSingleValueEvent(userListener);
 
+        groupJoinBtn.setEnabled(true);
+        groupJoinBtn.setClickable(true);
         // if the user is the creator, disable button press
         // if the user is in the guests, press the button
         if (model.creator.equals(userID)) {
