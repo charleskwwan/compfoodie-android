@@ -17,8 +17,8 @@
         android:layout_alignParentEnd="true">
         <Button
             android:id="@+id/group_join_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/button_pressed" />
         <TextView
             android:id="@+id/group_party_cnt"
@@ -62,7 +62,6 @@
                 android:textSize="12sp"/>
         </LinearLayout>
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/order_info"

@@ -77,7 +77,7 @@ public class GroupsAdapter extends FirebaseListAdapter<Group> {
         msgOutput.setText(model.message);
 
         // assign party cnt
-        String partyCnt = String.format(Locale.ENGLISH, "%d/%d",
+        String partyCnt = String.format(Locale.ENGLISH, "%d/%d ppl",
                 model.partySize.intValue(), model.partyCap.intValue());
         partyCntOutput.setText(partyCnt);
 

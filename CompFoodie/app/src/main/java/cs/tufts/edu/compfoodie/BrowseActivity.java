@@ -65,7 +65,6 @@ public class BrowseActivity extends AppCompatActivity {
         // set up drawer
         dbRef = FirebaseDatabase.getInstance().getReference();
         initNavDrawer();
-        Log.v("Browse onCreate", "1");
         // get user
         user = (User)getIntent().getSerializableExtra(getString(R.string.currentUserKey));
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
