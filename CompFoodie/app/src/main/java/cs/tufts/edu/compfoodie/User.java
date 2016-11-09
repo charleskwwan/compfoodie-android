@@ -1,4 +1,4 @@
- package cs.tufts.edu.compfoodie;
+package cs.tufts.edu.compfoodie;
 
 
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -8,15 +8,15 @@ import java.util.List;
 
 /**
  * Created by charlw on 9/27/16.
- *      represents a user
+ * represents a user
  */
 @IgnoreExtraProperties
-public class User implements Serializable {
+class User implements Serializable {
     public String name;
     public String picUrl;
     public List<String> groups;
 
-    public User() { // default requried for data snapshot
+    public User() { // default required for data snapshot
 
     }
 

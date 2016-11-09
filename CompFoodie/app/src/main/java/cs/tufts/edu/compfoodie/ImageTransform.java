@@ -10,13 +10,13 @@ import android.graphics.RectF;
 
 /**
  * Created by charlw on 10/31/16.
- *      suite of functions to transform image; mainly for profile pics
+ * suite of functions to transform image; mainly for profile pics
  */
 
-public class ImageTransform {
+class ImageTransform {
     // rounds corners of a bitmap
     // http://stackoverflow.com/questions/18229358/bitmap-in-imageview-with-rounded-corners
-    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
+    static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
                 .getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
@@ -25,7 +25,7 @@ public class ImageTransform {
         final Paint paint = new Paint();
         final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
         final RectF rectF = new RectF(rect);
-        final float roundPx = pixels;
+        final float roundPx = (float) pixels;
 
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);

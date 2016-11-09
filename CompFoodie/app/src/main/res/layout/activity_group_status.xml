@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,13 +13,13 @@
         android:elevation="10dp" />
 
     <RelativeLayout
-        android:layout_below="@+id/group_status_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/group_status_toolbar"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -28,84 +27,93 @@
 
         <TextView
             android:id="@+id/location_title"
-            android:text="@string/location_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:textSize="18sp"
-            android:textColor="@color/textColorPrimary"/>
+            android:text="@string/location_title"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/location_output"
-            android:layout_below="@+id/location_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:paddingLeft="3dp"
-            android:textSize="18sp"
+            android:layout_below="@+id/location_title"
             android:maxLines="1"
-            android:textColor="@color/textColorSecondary"/>
+            android:paddingStart="3dp"
+            android:paddingLeft="3dp"
+            android:paddingEnd="3dp"
+            android:paddingRight="3dp"
+            android:textColor="@color/textColorSecondary"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/order_time_title"
-            android:layout_below="@+id/location_output"
-            android:text="@string/wait_time_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_below="@+id/location_output"
             android:paddingTop="5dp"
-            android:textSize="18sp"
-            android:textColor="@color/textColorPrimary"/>
+            android:text="@string/wait_time_title"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/order_time_output"
-            android:layout_below="@+id/order_time_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:paddingLeft="3dp"
-            android:textSize="18sp"
+            android:layout_below="@+id/order_time_title"
             android:maxLines="1"
-            android:textColor="@color/textColorSecondary"/>
+            android:paddingStart="3dp"
+            android:paddingLeft="3dp"
+            android:paddingEnd="3dp"
+            android:paddingRight="3dp"
+            android:textColor="@color/textColorSecondary"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/message_title"
-            android:layout_below="@+id/order_time_output"
-            android:text="@string/message_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_below="@+id/order_time_output"
             android:paddingTop="5dp"
-            android:textSize="18sp"
-            android:textColor="@color/textColorPrimary"/>
+            android:text="@string/message_title"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/message_output"
-            android:layout_below="@+id/message_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_below="@+id/message_title"
+            android:maxLines="5"
+            android:paddingStart="3dp"
             android:paddingLeft="3dp"
-            android:textSize="18sp"
-            android:maxLines="5" />
+            android:paddingEnd="3dp"
+            android:paddingRight="3dp"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/party_title"
-            android:layout_below="@+id/message_output"
-            android:text="@string/party_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_below="@+id/message_output"
             android:paddingTop="5dp"
-            android:textSize="18sp"
-            android:textColor="@color/textColorPrimary"/>
+            android:text="@string/party_title"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/party_count_output"
@@ -114,19 +122,24 @@
             android:layout_below="@+id/message_output"
             android:layout_toEndOf="@+id/party_title"
             android:layout_toRightOf="@+id/party_title"
-            android:paddingTop="5dp"
+            android:paddingStart="10dp"
             android:paddingLeft="10dp"
-            android:textSize="18sp"
-            android:textColor="@color/textColorSecondary" />
+            android:paddingEnd="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:textColor="@color/textColorSecondary"
+            android:textSize="18sp" />
 
         <ListView
             android:id="@+id/party_list"
-            android:layout_below="@+id/party_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
+            android:layout_below="@+id/party_title"
+            android:paddingLeft="3dp"
             android:paddingStart="3dp"
-            android:paddingLeft="3dp" >
+            android:paddingRight="3dp"
+            android:paddingEnd="3dp"
+            android:paddingTop="5dp">
 
         </ListView>
 

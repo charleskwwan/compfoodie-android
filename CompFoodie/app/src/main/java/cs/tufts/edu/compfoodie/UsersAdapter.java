@@ -2,6 +2,7 @@ package cs.tufts.edu.compfoodie;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +19,13 @@ import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by charlw on 10/31/16.
- *      list adapter for users. primarily for status page
+ * list adapter for users. primarily for status page
  */
 
-public class UsersAdapter extends ArrayAdapter<String> {
+class UsersAdapter extends ArrayAdapter<String> {
     private Context context;
-    private String userIds[] = null;
     private DatabaseReference usersRef;
+    private String userIds[] = null;
 
     // constructor
     public UsersAdapter(Context context, String[] userIds) {
@@ -35,22 +36,24 @@ public class UsersAdapter extends ArrayAdapter<String> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @SuppressWarnings("ConstantConditions")
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         // get user id at position
         String userId = getItem(position);
         // check if view is reused, otherwise inflate
-        if (convertView == null) {
+        if (convertView == null) { // guaranteed nonnull return
             convertView = LayoutInflater.from(context).inflate(R.layout.item_user, parent, false);
         }
         // fill fields
-        final TextView userNameOutput = (TextView)convertView.findViewById(R.id.user_name);
-        final ImageView userPicOutput = (ImageView)convertView.findViewById(R.id.user_pic);
+        final TextView userNameOutput = (TextView) convertView.findViewById(R.id.user_name);
+        final ImageView userPicOutput = (ImageView) convertView.findViewById(R.id.user_pic);
         DatabaseReference userRef = usersRef.child(userId);
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                userNameOutput.setText((String)dataSnapshot.child("name").getValue());
-                String userPicUrl = (String)dataSnapshot.child("picUrl").getValue();
+                userNameOutput.setText((String) dataSnapshot.child("name").getValue());
+                String userPicUrl = (String) dataSnapshot.child("picUrl").getValue();
                 VolleyUtils.getImage(userPicUrl, context,
                         new VolleyCallback<Bitmap>() {
                             @Override
@@ -61,6 +64,7 @@ public class UsersAdapter extends ArrayAdapter<String> {
                             }
                         });
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("*** User Adapter", databaseError.toString());

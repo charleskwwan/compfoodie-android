@@ -10,7 +10,7 @@ import java.util.Calendar;
 
 /**
  * Created by charlw on 10/4/16.
- *      represents dialog fragment for picking wait time
+ * represents dialog fragment for picking wait time
  */
 
 public class WaitTimePickerFragment extends DialogFragment {
@@ -28,8 +28,7 @@ public class WaitTimePickerFragment extends DialogFragment {
         final Calendar cal = Calendar.getInstance();
         int hourOfDay = cal.get(Calendar.HOUR);
         int minOfDay = cal.get(Calendar.MINUTE);
-        TimePickerDialog tpd = new TimePickerDialog(getActivity(), timeSetListener, hourOfDay, minOfDay,
-                                                    DateFormat.is24HourFormat(getActivity()));
-        return tpd;
+        return new TimePickerDialog(getActivity(), timeSetListener, hourOfDay, minOfDay,
+                DateFormat.is24HourFormat(getActivity()));
     }
 }

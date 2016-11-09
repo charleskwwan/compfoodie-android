@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/cs/tufts/edu/compfoodie/CreateGroupActivity.java</file>
+    <line>28</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="class" FQNAME="cs.tufts.edu.compfoodie.CreateGroupActivity" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/cs/tufts/edu/compfoodie/LoginActivity.java</file>
+    <line>39</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="class" FQNAME="cs.tufts.edu.compfoodie.LoginActivity" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/test/java/cs/tufts/edu/compfoodie/ExampleUnitTest.java</file>
+    <line>12</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="method" FQNAME="cs.tufts.edu.compfoodie.ExampleUnitTest void addition_isCorrect()" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Method is never used.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/test/java/cs/tufts/edu/compfoodie/ExampleUnitTest.java</file>
+    <line>10</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="class" FQNAME="cs.tufts.edu.compfoodie.ExampleUnitTest" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/androidTest/java/cs/tufts/edu/compfoodie/ApplicationTest.java</file>
+    <line>10</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="method" FQNAME="cs.tufts.edu.compfoodie.ApplicationTest ApplicationTest()" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Constructor is never used.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/androidTest/java/cs/tufts/edu/compfoodie/ApplicationTest.java</file>
+    <line>9</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="class" FQNAME="cs.tufts.edu.compfoodie.ApplicationTest" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/cs/tufts/edu/compfoodie/GroupStatusActivity.java</file>
+    <line>25</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="class" FQNAME="cs.tufts.edu.compfoodie.GroupStatusActivity" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/cs/tufts/edu/compfoodie/BrowseActivity.java</file>
+    <line>43</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="class" FQNAME="cs.tufts.edu.compfoodie.BrowseActivity" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/cs/tufts/edu/compfoodie/MyGroupsActivity.java</file>
+    <line>24</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="class" FQNAME="cs.tufts.edu.compfoodie.MyGroupsActivity" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/cs/tufts/edu/compfoodie/CreateGroupActivity.java</file>
+    <line>28</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="class" FQNAME="cs.tufts.edu.compfoodie.CreateGroupActivity" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/cs/tufts/edu/compfoodie/LoginActivity.java</file>
+    <line>39</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="class" FQNAME="cs.tufts.edu.compfoodie.LoginActivity" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/test/java/cs/tufts/edu/compfoodie/ExampleUnitTest.java</file>
+    <line>10</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="class" FQNAME="cs.tufts.edu.compfoodie.ExampleUnitTest" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/cs/tufts/edu/compfoodie/GroupStatusActivity.java</file>
+    <line>25</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="class" FQNAME="cs.tufts.edu.compfoodie.GroupStatusActivity" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/cs/tufts/edu/compfoodie/BrowseActivity.java</file>
+    <line>43</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="class" FQNAME="cs.tufts.edu.compfoodie.BrowseActivity" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/app/src/main/java/cs/tufts/edu/compfoodie/MyGroupsActivity.java</file>
+    <line>24</line>
+    <module>app</module>
+    <package>cs.tufts.edu.compfoodie</package>
+    <entry_point TYPE="class" FQNAME="cs.tufts.edu.compfoodie.MyGroupsActivity" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+</problems>
+
