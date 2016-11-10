@@ -22,6 +22,8 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class BrowseActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -51,6 +53,9 @@ public class BrowseActivity extends AppCompatActivity {
         setUserProfile();
         // populate list view with groups
         populateGroups();
+
+        FirebaseInstanceId.getInstance().getToken();
+        FirebaseMessaging.getInstance().subscribeToTopic("groupID_-KVt2MsmhsezIXgIGego");
     }
 
     private void populateGroups() {

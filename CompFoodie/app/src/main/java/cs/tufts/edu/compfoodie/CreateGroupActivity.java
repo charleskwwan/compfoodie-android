@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
     private DatabaseReference userRef;
     private User user;
     private Group group;
-    private String groupId;
+    private String groupID;
     private double orderHour;
     private double orderMinute;
     private EditText locationText;
@@ -151,20 +152,23 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
         // add to database
         database = FirebaseDatabase.getInstance();
         groupRef = database.getReference("groups");
-        groupId = groupRef.push().getKey();
-        groupRef.child(groupId).setValue(group);
-        Log.v("*** New Group Added", groupId);
+        groupID = groupRef.push().getKey();
+        groupRef.child(groupID).setValue(group);
+        Log.v("*** New Group Added", groupID);
         // adds the group to the users entry
         userRef = database.getReference("users");
-        user.groups.add(groupId);
+        user.groups.add(groupID);
         userRef.child(creatorId).setValue(user);
+
+        // subscribe to get push notification
+        FirebaseMessaging.getInstance().subscribeToTopic("groupID_"+groupID);
     }
 
     private void goToStatus() {
         Intent statusPage = new Intent(getApplicationContext(), GroupStatusActivity.class);
         statusPage.putExtra(getString(R.string.currentUserKey), user);
         statusPage.putExtra(getString(R.string.currentGroupKey), group);
-        statusPage.putExtra(getString(R.string.currentGroupIdKey), groupId);
+        statusPage.putExtra(getString(R.string.currentGroupIDKey), groupID);
         startActivity(statusPage);
     }
 }

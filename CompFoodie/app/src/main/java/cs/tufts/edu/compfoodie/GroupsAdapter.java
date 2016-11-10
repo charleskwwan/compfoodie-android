@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -120,6 +121,10 @@ class GroupsAdapter extends FirebaseListAdapter<Group> {
             });
         }
 
+        final DatabaseReference groupRef = getRef(position);
+        final String groupID = groupRef.getKey();
+        final DatabaseReference userRef = dbRef.child("users").child(userID);
+        final Group group = getItem(position);
 
         // Disable button press if the user is the creator,
         // or if the group is full and the user is not in the group
@@ -141,11 +146,6 @@ class GroupsAdapter extends FirebaseListAdapter<Group> {
         groupJoinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final DatabaseReference groupRef = getRef(position);
-                final String groupID = groupRef.getKey();
-                final DatabaseReference userRef = dbRef.child("users").child(userID);
-                final Group group = getItem(position);
-
                 userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot userSnap) {
@@ -163,17 +163,18 @@ class GroupsAdapter extends FirebaseListAdapter<Group> {
                                 }
 
                                 if (group.guests.contains(userID)) {
+                                    FirebaseMessaging.getInstance().unsubscribeFromTopic("groupID_"+groupID);
                                     user.groups.remove(groupID);
                                     group.guests.remove(userID);
                                     group.partySize--;
                                 } else {
+                                    FirebaseMessaging.getInstance().subscribeToTopic("groupID_"+groupID);
                                     user.groups.add(groupID);
                                     group.guests.add(userID);
                                     group.partySize++;
                                 }
                                 userRef.setValue(user);
                                 groupRef.setValue(group);
-                                //notifyDataSetChanged();
                             }
 
                             @Override

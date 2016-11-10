@@ -3,7 +3,7 @@
     <!-- Passing via Intent -->
     <string name="currentUserKey">currentUser</string>
     <string name="currentGroupKey">currentGroup</string>
-    <string name="currentGroupIdKey">currentGroupId</string>
+    <string name="currentGroupIDKey">currentGroupId</string>
     <!-- Create Group Activity -->
     <string name="create_group_title">Create a Group</string>
     <string name="location_title">Location</string>
