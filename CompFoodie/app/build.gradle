@@ -21,6 +21,10 @@ android {
         versionCode 1
         versionName "1.0"
         android.defaultConfig.vectorDrawables.useSupportLibrary true
+        multiDexEnabled true
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
     }
     buildTypes {
         release {
@@ -57,6 +61,8 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:9.6.1'
     compile 'com.google.firebase:firebase-messaging:9.2.0'
     compile 'com.firebaseui:firebase-ui:0.6.1'
+
+    compile 'com.android.support:multidex:1.0.0'
 
     compile 'com.android.volley:volley:1.0.0'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
