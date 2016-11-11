@@ -55,7 +55,7 @@ public class BrowseActivity extends AppCompatActivity {
         populateGroups();
 
         FirebaseInstanceId.getInstance().getToken();
-        FirebaseMessaging.getInstance().subscribeToTopic("groupID_-KVt2MsmhsezIXgIGego");
+        FirebaseMessaging.getInstance().subscribeToTopic("groupID_-KVlhiEg-e8fsAJXdw8G");
     }
 
     private void populateGroups() {
