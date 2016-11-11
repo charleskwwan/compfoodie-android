@@ -146,6 +146,7 @@ class GroupsAdapter extends FirebaseListAdapter<Group> {
         groupJoinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot userSnap) {

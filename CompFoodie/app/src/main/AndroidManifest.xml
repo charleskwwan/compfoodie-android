@@ -81,6 +81,13 @@
         </service>
 
         <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_access_alarm_black_24dp" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
+        <meta-data
             android:name="io.fabric.ApiKey"
             android:value="53db0ed0493c362a6780f6eb83d9368dd6a179a1" />
 

@@ -1,6 +1,7 @@
 package cs.tufts.edu.compfoodie;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -25,10 +26,10 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d("MESSAGE", "Message Notification Body: " + remoteMessage.getNotification().getTitle());
+            //Toast.makeText(this, "ORDER READY! remoteMessage.getNotification().getTitle()", Toast.LENGTH_SHORT).show();
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
     }
-
 }
