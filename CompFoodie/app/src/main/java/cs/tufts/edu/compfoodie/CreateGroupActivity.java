@@ -22,8 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class CreateGroupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     private FirebaseDatabase database;
@@ -32,8 +33,7 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
     private User user;
     private Group group;
     private String groupId;
-    private double orderHour;
-    private double orderMinute;
+    private double unixTime;
     private EditText locationText;
     private EditText partyCapText;
     private TextView orderTimeText;
@@ -65,9 +65,9 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
         wtbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WaitTimePickerFragment wtpfrag = WaitTimePickerFragment
-                        .newInstance(CreateGroupActivity.this);
-                wtpfrag.show(getFragmentManager(), "order_time_picker");
+                TimePickerDialog wtpfrag = new TimePickerDialog(CreateGroupActivity.this,
+                        R.style.CompFoodie_TimePickerDialogTheme, CreateGroupActivity.this, 0, 0, true);
+                wtpfrag.show();
             }
         });
 
@@ -111,14 +111,17 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
     // sets the order time variables and the order time output
     @Override
     public void onTimeSet(TimePicker tp, int hour, int minute) {
+        // set unix time for group
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MINUTE, minute);
+        cal.add(Calendar.HOUR, hour);
+        unixTime = cal.getTime().getTime() / 1000L;
+
+        // set display
         TextView order_time_output = (TextView) findViewById(R.id.order_time_output);
-        orderHour = hour;
-        orderMinute = minute;
-        String tformat = hour < 12 ? "AM" : "PM";
-        hour %= 12;
-        String hstr = String.format(Locale.ENGLISH, "%02d", hour);
-        String mstr = String.format(Locale.ENGLISH, "%02d", minute);
-        order_time_output.setText(hstr + ":" + mstr + " " + tformat);
+        String orderTimeString = "Order in " + Integer.toString(hour) + "h " +
+                Integer.toString(minute) + "m";
+        order_time_output.setText(orderTimeString);
     }
 
     // checks that there is input in all required text fields
@@ -146,8 +149,7 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
         List<String> guests = new ArrayList<>();
         guests.add(creatorId);
         // create group
-        group = new Group(location, partyCap, partySize, message, creatorId, guests, orderHour,
-                orderMinute);
+        group = new Group(location, partyCap, partySize, message, creatorId, guests, unixTime);
         // add to database
         database = FirebaseDatabase.getInstance();
         groupRef = database.getReference("groups");

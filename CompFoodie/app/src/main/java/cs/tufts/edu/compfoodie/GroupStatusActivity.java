@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,8 +19,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class GroupStatusActivity extends AppCompatActivity {
     private String groupId;
@@ -101,11 +106,14 @@ public class GroupStatusActivity extends AppCompatActivity {
     // fills all relevant text fields in the layout
     private void setStatus() {
         locationOutput.setText(group.location);
-        int orderHour = group.hour.intValue();
-        String tformat = orderHour < 12 ? "AM" : "PM";
-        String hstr = String.format(Locale.ENGLISH, "%02d", orderHour % 12);
-        String mstr = String.format(Locale.ENGLISH, "%02d", group.minute.intValue());
-        orderTimeOutput.setText(hstr + ":" + mstr + " " + tformat);
+
+        // convert unix time to current time
+        Date date = new Date(group.unixTime.intValue() * 1000L);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getDefault());
+        String orderTime = sdf.format(date);
+        orderTimeOutput.setText(orderTime);
+
         messageOutput.setText(group.message);
         String orderTimeStr = String.format(Locale.ENGLISH, "%d/%d", group.partySize.intValue(),
                 group.partyCap.intValue());

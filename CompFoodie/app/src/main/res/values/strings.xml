@@ -6,7 +6,7 @@
     <string name="currentGroupIdKey">currentGroupId</string>
     <!-- Create Group Activity -->
     <string name="create_group_title">Create a Group</string>
-    <string name="location_title">Location</string>
+    <string name="location_title">Meetup Location</string>
     <string name="location_hint">Where do you want to meet to order?</string>
     <string name="party_size_title">Party Size</string>
     <string name="party_size_hint">Order with max how many people?</string>

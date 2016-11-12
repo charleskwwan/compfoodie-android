@@ -17,8 +17,7 @@ class Group implements Serializable {
     public Double partySize;
     public String message;
     public String creator;
-    public Double hour;
-    public Double minute;
+    public Double unixTime;
     public List<String> guests;
 
     public Group() {
@@ -26,14 +25,13 @@ class Group implements Serializable {
     }
 
     public Group(String location, Double partyCap, Double partySize, String message, String creator,
-                 List<String> guests, Double hour, Double minute) {
+                 List<String> guests, Double unixTime) {
         this.location = location;
         this.partyCap = partyCap;
         this.partySize = partySize;
         this.message = message;
         this.creator = creator;
         this.guests = guests;
-        this.hour = hour;
-        this.minute = minute;
+        this.unixTime = unixTime;
     }
 }

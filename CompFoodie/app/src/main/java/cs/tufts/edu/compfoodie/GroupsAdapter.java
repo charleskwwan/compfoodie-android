@@ -17,10 +17,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 class GroupsAdapter extends FirebaseListAdapter<Group> {
     private DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
@@ -79,11 +82,11 @@ class GroupsAdapter extends FirebaseListAdapter<Group> {
 
         // assign order time and location
         String location = model.location;
-        int orderHour = model.hour.intValue();
-        String tformat = orderHour < 12 ? "AM" : "PM";
-        String hstr = String.format(Locale.ENGLISH, "%02d", orderHour % 12);
-        String mstr = String.format(Locale.ENGLISH, "%02d", model.minute.intValue());
-        orderTimeLocationOutput.setText("Ordering at " + hstr + ":" + mstr + " " + tformat + " from " + location);
+        Date time = new Date(model.unixTime.intValue() * 1000L);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getDefault());
+        String orderTime = sdf.format(time);
+        orderTimeLocationOutput.setText("Ordering at " + orderTime + " from " + location);
 
         // set creator image
         // if already exist in cache, use, otherwise map async request

@@ -15,4 +15,28 @@
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
         <item name="android:textColorSecondaryInverse">@color/textColorSecondaryInverse</item>
     </style>
+
+    <style name="CompFoodie.TimePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog.MinWidth">
+        <!-- from compfoodie -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="android:colorForeground">@color/colorForeground</item>
+        <item name="android:navigationBarColor">@color/navBarColor</item>
+        <item name="android:statusBarColor">@color/statBarColor</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:textColorSecondaryInverse">@color/textColorSecondaryInverse</item>
+
+        <!-- time picker stuff -->
+        <item name="android:timePickerMode">spinner</item>
+        <item name="android:timePickerStyle">@style/SpinnerTimePicker</item>
+        <item name="android:timePickerDialogTheme">@style/SpinnerTimePicker</item>
+    </style>
+
+    <style name="SpinnerTimePicker" parent="android:Widget.Material.Light.TimePicker">
+        <item name="android:timePickerMode">spinner</item>
+    </style>
 </resources>
