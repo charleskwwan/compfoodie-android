@@ -24,7 +24,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d("MESSAGE", "HELLO");
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d("MESSAGE", "From: " + remoteMessage.getFrom());
 
@@ -34,10 +33,10 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             String message = remoteMessage.getNotification().getTitle();
             Log.d("MESSAGE", "Message Notification Body: " + message);
 
-            Intent loginIntent = new Intent(this, LoginActivity.class);
-            loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Intent myGroupsIntent = new Intent(this, MyGroupsActivity.class);
+            myGroupsIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-            PendingIntent pendingIntent = PendingIntent.getActivities(this, 0, new Intent[]{loginIntent}, PendingIntent.FLAG_ONE_SHOT);
+            PendingIntent pendingIntent = PendingIntent.getActivities(this, 0, new Intent[]{myGroupsIntent}, PendingIntent.FLAG_ONE_SHOT);
 
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
             notificationBuilder.setContentTitle("Order Alert");
@@ -45,7 +44,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             notificationBuilder.setAutoCancel(true);
             notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
             notificationBuilder.setContentIntent(pendingIntent);
-            notificationBuilder.setVibrate(new long[0]);
+            notificationBuilder.setVibrate(new long[500]);
 
             notificationBuilder.setPriority(Notification.PRIORITY_HIGH);
 
