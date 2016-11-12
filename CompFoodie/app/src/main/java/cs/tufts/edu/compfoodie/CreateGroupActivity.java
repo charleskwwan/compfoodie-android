@@ -23,7 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class CreateGroupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
@@ -150,16 +149,20 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
         guests.add(creatorId);
         // create group
         group = new Group(location, partyCap, partySize, message, creatorId, guests, unixTime);
+
         // add to database
         database = FirebaseDatabase.getInstance();
         groupRef = database.getReference("groups");
         groupId = groupRef.push().getKey();
-        groupRef.child(groupId).setValue(group);
+//        groupRef.child(groupId).setValue(group);
+        groupRef.child(groupId).updateChildren(group.toMap());
         Log.v("*** New Group Added", groupId);
+
         // adds the group to the users entry
         userRef = database.getReference("users");
         user.groups.add(groupId);
-        userRef.child(creatorId).setValue(user);
+//        userRef.child(creatorId).setValue(user);
+        userRef.child(creatorId).updateChildren(user.toMap());
     }
 
     private void goToStatus() {

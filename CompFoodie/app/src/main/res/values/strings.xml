@@ -25,8 +25,10 @@
     <string name="login_toolbar_title">Login</string>
     <!-- Browse -->
     <string name="browse_toolbar_title">Browse</string>
+    <string name="browse_no_groups">No open groups found. Make one!</string>
     <!-- My Groups -->
     <string name="my_groups_toolbar_title">My Groups</string>
+    <string name="my_groups_no_groups">You are not in any groups. Make one!</string>
     <!-- Toolbar -->
     <string name="user_display_item_title">User</string>
     <string name="add_group_item_title">Add Group</string>

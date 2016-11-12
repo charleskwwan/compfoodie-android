@@ -144,6 +144,7 @@ class GroupsAdapter extends FirebaseListAdapter<Group> {
         groupJoinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("onClick", "entered");
                 final DatabaseReference groupRef = getRef(position);
                 final String groupID = groupRef.getKey();
                 final DatabaseReference userRef = dbRef.child("users").child(userID);
@@ -174,8 +175,10 @@ class GroupsAdapter extends FirebaseListAdapter<Group> {
                                     group.guests.add(userID);
                                     group.partySize++;
                                 }
-                                userRef.setValue(user);
-                                groupRef.setValue(group);
+//                                userRef.setValue(user);
+                                userRef.updateChildren(user.toMap());
+//                                groupRef.setValue(group);
+                                groupRef.updateChildren(group.toMap());
                                 //notifyDataSetChanged();
                             }
 

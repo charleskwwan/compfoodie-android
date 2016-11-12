@@ -33,6 +33,8 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
@@ -203,7 +205,8 @@ public class LoginActivity extends AppCompatActivity {
         // add user to firebase
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users");
-        userRef.child(userId).setValue(user);
+//        userRef.child(userId).setValue(user);
+        userRef.child(userId).updateChildren(user.toMap());
         // goto browse
         Intent browsePage = new Intent(getApplicationContext(), BrowseActivity.class);
         browsePage.putExtra(getString(R.string.currentUserKey), user);
