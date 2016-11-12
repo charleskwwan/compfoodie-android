@@ -1,6 +1,8 @@
 package cs.tufts.edu.compfoodie;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +37,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class LoginActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
@@ -42,10 +46,14 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private User user;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // initialize sharedPreferences
+        prefs = getSharedPreferences("", Context.MODE_PRIVATE);
 
         // initialize fb sdk
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -205,8 +213,15 @@ public class LoginActivity extends AppCompatActivity {
         // add user to firebase
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users");
-//        userRef.child(userId).setValue(user);
         userRef.child(userId).updateChildren(user.toMap());
+
+        // add user to sharedPreferences
+        prefs.edit().putString(getString(R.string.user_name), user.name).apply();
+        prefs.edit().putString(getString(R.string.user_picURL), user.picUrl).apply();
+        Set<String> groupSet = new HashSet<String>();
+        groupSet.addAll(user.groups);
+        prefs.edit().putStringSet(getString(R.string.user_groups), groupSet).apply();
+
         // goto browse
         Intent browsePage = new Intent(getApplicationContext(), BrowseActivity.class);
         browsePage.putExtra(getString(R.string.currentUserKey), user);

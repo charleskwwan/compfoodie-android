@@ -51,7 +51,7 @@ public class GroupStatusActivity extends AppCompatActivity {
         // get intent info
         user = (User) getIntent().getSerializableExtra(getString(R.string.currentUserKey));
         group = (Group) getIntent().getSerializableExtra(getString(R.string.currentGroupKey));
-        groupId = (String) getIntent().getSerializableExtra(getString(R.string.currentGroupIdKey));
+        groupId = (String) getIntent().getSerializableExtra(getString(R.string.currentGroupIDKey));
 
         // get status page text fields
         locationOutput = (TextView) findViewById(R.id.location_output);

@@ -1,6 +1,8 @@
 package cs.tufts.edu.compfoodie;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
@@ -13,13 +15,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 public class MyGroupsActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private String userID;
     private DatabaseReference groupsRef;
     private ListView groupsLV;
     private DatabaseReference dbRef;
     private User user;
+    private SharedPreferences prefs;
 
     @Override
     @SuppressWarnings("ConstantConditions")
@@ -34,8 +39,15 @@ public class MyGroupsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // get user
+        prefs = this.getSharedPreferences("", Context.MODE_PRIVATE);
+
         user = (User) getIntent().getSerializableExtra(getString(R.string.currentUserKey));
-        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if (user == null) {
+            user = new User();
+            user.name = prefs.getString(getString(R.string.user_name), "");
+            user.picUrl = prefs.getString(getString(R.string.user_picURL), "");
+            user.groups = new ArrayList(prefs.getStringSet(getString(R.string.user_groups), new HashSet<String>()));
+        }
 
         // work with firebase
         dbRef = FirebaseDatabase.getInstance().getReference();

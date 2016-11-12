@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,7 +32,7 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
     private DatabaseReference userRef;
     private User user;
     private Group group;
-    private String groupId;
+    private String groupID;
     private double unixTime;
     private EditText locationText;
     private EditText partyCapText;
@@ -144,32 +145,33 @@ public class CreateGroupActivity extends AppCompatActivity implements TimePicker
         String message = messageText.getText().toString();
         // get user for creator
         FirebaseUser creator = FirebaseAuth.getInstance().getCurrentUser();
-        String creatorId = creator.getUid();
+        String creatorID = creator.getUid();
         List<String> guests = new ArrayList<>();
-        guests.add(creatorId);
+        guests.add(creatorID);
         // create group
-        group = new Group(location, partyCap, partySize, message, creatorId, guests, unixTime);
+        group = new Group(location, partyCap, partySize, message, creatorID, guests, unixTime);
 
         // add to database
         database = FirebaseDatabase.getInstance();
         groupRef = database.getReference("groups");
-        groupId = groupRef.push().getKey();
-//        groupRef.child(groupId).setValue(group);
-        groupRef.child(groupId).updateChildren(group.toMap());
-        Log.v("*** New Group Added", groupId);
+        groupID = groupRef.push().getKey();
+        groupRef.child(groupID).updateChildren(group.toMap());
+        Log.v("*** New Group Added", groupID);
 
         // adds the group to the users entry
         userRef = database.getReference("users");
-        user.groups.add(groupId);
-//        userRef.child(creatorId).setValue(user);
-        userRef.child(creatorId).updateChildren(user.toMap());
+        user.groups.add(groupID);
+        userRef.child(creatorID).updateChildren(user.toMap());
+
+        // subscribe to get push notification
+        FirebaseMessaging.getInstance().subscribeToTopic("groupID_"+groupID);
     }
 
     private void goToStatus() {
         Intent statusPage = new Intent(getApplicationContext(), GroupStatusActivity.class);
         statusPage.putExtra(getString(R.string.currentUserKey), user);
         statusPage.putExtra(getString(R.string.currentGroupKey), group);
-        statusPage.putExtra(getString(R.string.currentGroupIdKey), groupId);
+        statusPage.putExtra(getString(R.string.currentGroupIDKey), groupID);
         startActivity(statusPage);
     }
 }

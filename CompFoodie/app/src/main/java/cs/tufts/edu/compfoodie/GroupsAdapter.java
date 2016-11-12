@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -123,7 +124,6 @@ class GroupsAdapter extends FirebaseListAdapter<Group> {
             });
         }
 
-
         // Disable button press if the user is the creator,
         // or if the group is full and the user is not in the group
         if ((model.guests.size() == model.partyCap && !model.guests.contains(userID)) || model.creator.equals(userID)) {
@@ -144,11 +144,9 @@ class GroupsAdapter extends FirebaseListAdapter<Group> {
         groupJoinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("onClick", "entered");
                 final DatabaseReference groupRef = getRef(position);
                 final String groupID = groupRef.getKey();
                 final DatabaseReference userRef = dbRef.child("users").child(userID);
-                final Group group = getItem(position);
 
                 userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -159,27 +157,27 @@ class GroupsAdapter extends FirebaseListAdapter<Group> {
                         groupRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot clickedGroupSnap) {
-                                if (group.guests == null) {
-                                    group.guests = new ArrayList<>();
+                                if (model.guests == null) {
+                                    model.guests = new ArrayList<>();
                                 }
                                 if (user.groups == null) {
                                     user.groups = new ArrayList<>();
                                 }
 
-                                if (group.guests.contains(userID)) {
+                                if (model.guests.contains(userID)) {
+                                    FirebaseMessaging.getInstance().unsubscribeFromTopic("groupID_"+groupID);
                                     user.groups.remove(groupID);
-                                    group.guests.remove(userID);
-                                    group.partySize--;
+                                    model.guests.remove(userID);
+                                    model.partySize--;
                                 } else {
+                                    FirebaseMessaging.getInstance().subscribeToTopic("groupID_"+groupID);
                                     user.groups.add(groupID);
-                                    group.guests.add(userID);
-                                    group.partySize++;
+                                    model.guests.add(userID);
+                                    model.partySize++;
                                 }
-//                                userRef.setValue(user);
+                                
                                 userRef.updateChildren(user.toMap());
-//                                groupRef.setValue(group);
-                                groupRef.updateChildren(group.toMap());
-                                //notifyDataSetChanged();
+                                groupRef.updateChildren(model.toMap());
                             }
 
                             @Override
