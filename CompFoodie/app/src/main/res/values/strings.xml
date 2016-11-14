@@ -28,6 +28,8 @@
     <!-- Login -->
     <string name="facebook_app_id">1841426099410747</string>
     <string name="login_toolbar_title">Login</string>
+    <string name="login_title">CompFoodie</string>
+    <string name="login_alert_text">You need to update Google Play Services</string>
     <!-- Browse -->
     <string name="browse_toolbar_title">Browse</string>
     <string name="browse_no_groups">No open groups found. Make one!</string>

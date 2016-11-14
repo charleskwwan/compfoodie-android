@@ -7,14 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.messaging.RemoteMessage;
-
-import java.lang.reflect.Array;
-
-import static android.R.id.message;
-import static android.app.PendingIntent.FLAG_ONE_SHOT;
 
 /**
  * Created by ngapham on 11/10/16.

@@ -3,12 +3,17 @@ package cs.tufts.edu.compfoodie;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -18,14 +23,18 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.vision.text.Text;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -41,12 +50,11 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
 
 public class LoginActivity extends AppCompatActivity {
+    public static final int REQUEST_GOOGLE_PLAY_SERVICES = 1972;
     private CallbackManager callbackManager;
     private AccessToken accessToken;
     private FirebaseAuth mAuth;
@@ -70,32 +78,51 @@ public class LoginActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
-        // ToolBar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.login_toolbar);
-        toolbar.setTitle(getString(R.string.login_toolbar_title));
-        setSupportActionBar(toolbar);
+        // ToolBar - distorts look, commented out
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.login_toolbar);
+//        toolbar.setTitle(getString(R.string.login_toolbar_title));
+//        setSupportActionBar(toolbar);
+
+        // Set logo
+        ImageView logoView = (ImageView)findViewById(R.id.login_logo);
+        BitmapDrawable logo = (BitmapDrawable)ContextCompat.getDrawable(this, R.mipmap.ic_app_logo);
+        Bitmap logoBitmap = logo.getBitmap();
+        logoBitmap = Bitmap.createScaledBitmap(logoBitmap, logoBitmap.getWidth() * 2,
+                logoBitmap.getHeight() * 2, false);
+        logoView.setImageBitmap(logoBitmap);
+
+        Log.e("*** Login GMS", Integer.toString(R.integer.google_play_services_version));
 
         // fb login button
         callbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.v("*** Facebook Login", "Login successful, saving access token");
-                accessToken = loginResult.getAccessToken();
-                handleFacebookAccessToken(accessToken);
-            }
+        TextView alertView = (TextView) findViewById(R.id.login_alert);
+        if (checkGooglePlayServices()) { // only allow login if up to date gms, otherwise scold
+            alertView.setText("");
+            loginButton.setEnabled(true);
+            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    Log.v("*** Facebook Login", "Login successful, saving access token");
+                    accessToken = loginResult.getAccessToken();
+                    handleFacebookAccessToken(accessToken);
+                }
 
-            @Override
-            public void onCancel() {
-                Log.v("*** Facebook Login", "Login cancelled");
-            }
+                @Override
+                public void onCancel() {
+                    Log.v("*** Facebook Login", "Login cancelled");
+                }
 
-            @Override
-            public void onError(FacebookException e) {
-                Log.e("*** Facebook Login", e.toString());
-            }
-        });
+                @Override
+                public void onError(FacebookException e) {
+                    Log.e("*** Facebook Login", e.toString());
+                }
+            });
+        } else {
+            alertView.setText(getString(R.string.login_alert_text));
+            loginButton.setEnabled(false);
+
+        }
 
         // firebase auth
         mAuth = FirebaseAuth.getInstance();
@@ -104,15 +131,23 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 if (firebaseUser != null) { // user signed in
-                    Log.d("*** Firebase Auth", "User " + firebaseUser.getUid() + " signed in");
-                    Toast.makeText(LoginActivity.this, "Logged in as " + firebaseUser
-                            .getDisplayName(), Toast.LENGTH_SHORT).show();
-                    getUser(); // also handles go to browse
+                    if (AccessToken.getCurrentAccessToken() != null) {
+                        Log.d("*** Firebase Auth", "User " + firebaseUser.getUid() + " signed in");
+                        Toast.makeText(LoginActivity.this, "Logged in as " + firebaseUser
+                                .getDisplayName(), Toast.LENGTH_SHORT).show();
+                        getUser(); // also handles go to browse
+                    } else {
+                        firebaseAuth.signOut();
+                    }
                 } else { // user not signed in/signed out
                     Log.d("*** Firebase Auth", "User not signed in");
+                    if (AccessToken.getCurrentAccessToken() != null) {
+                        LoginManager.getInstance().logOut();
+                    }
                 }
             }
         };
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -146,6 +181,21 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    // http://stackoverflow.com/questions/17858215/google-play-services-out-of-date-requires-3159100-but-found-3158130
+    // checks if google play services is up to date or not, otherwise show dialog
+    private boolean checkGooglePlayServices() {
+        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+        int result = googleAPI.isGooglePlayServicesAvailable(this);
+        if(result != ConnectionResult.SUCCESS) {
+            if(googleAPI.isUserResolvableError(result)) {
+                googleAPI.getErrorDialog(this, result,
+                        REQUEST_GOOGLE_PLAY_SERVICES).show();
+            }
+            return false;
+        }
+        return true;
     }
 
     // exchange fb token for firebase token
